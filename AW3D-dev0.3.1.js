@@ -723,7 +723,7 @@
 
             if ( arguments.length == 0 ) {
 
-                this.slots.forEach( function( name, index ){
+                this.slots.forEach( ( name, index ) => {
                     if ( !!player.outfit[ name ] ){
                         data[ name ] = player.outfit.getdata( name );
                     }
