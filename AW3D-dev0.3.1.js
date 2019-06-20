@@ -723,11 +723,12 @@
 
             if ( arguments.length == 0 ) {
 
-                this.slots.forEach( ( name, index ) => {
-                    if ( !!player.outfit[ name ] ){
-                        data[ name ] = player.outfit.getdata( name );
+                for (var i = 0; i < this.slots.length; i++) {
+                    var name = this.slots[i];
+                    if ( !!this[ name ] ) {
+                        data[ name ] = this.getdata( name );
                     }
-                });
+                }
 
             } else {
 
