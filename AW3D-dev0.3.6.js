@@ -122,23 +122,24 @@
     //  Slots. (clothes-category-model).
 
         this.slots = [
+            "skeleton",
             "body",
             "hairs",
             "eyes",
-            "hat",
             "glasses",
+            "hat",
             "stockings",
             "underwears",
+            "costume",
             "tshirt",
             "skirt",
             "trousers",
-            "costume",
+            "skirt",
             "dress",
             "shoes",
             "coat",
             "penis", 
             "vagina",
-            "skeleton",
         ];
 
     //  (Images-Canvas-Textures).
@@ -704,16 +705,18 @@
                 if (json.skeleton) orderMap.push("skeleton");
                 if (json.body) orderMap.push("body");
                 if (json.eyes) orderMap.push("eyes");
+                if (json.glasses) orderMap.push("glasses");
                 if (json.hairs) orderMap.push("hairs");
+                if (json.hat) orderMap.push("hat");
                 if (json.stockings) orderMap.push("stockings");
                 if (json.underwears) orderMap.push("underwears");
+                if (json.costume) orderMap.push("costume");
                 if (json.tshirt) orderMap.push("tshirt");
                 if (json.trousers) orderMap.push("trousers");
-                if (json.costume) orderMap.push("costume");
+                if (json.skirt) orderMap.push("skirt");
                 if (json.dress) orderMap.push("dress");
                 if (json.shoes) orderMap.push("shoes");
                 if (json.coat) orderMap.push("coat");
-
             }
 
         //  debugMode && console.log({"orderMap": orderMap});
@@ -732,7 +735,7 @@
                     object.name      = json[ key ].name;
                     object.visible   = json[ key ].visible;
                     object.material  = json[ key ].material;
-                    object.geometry  = json[ key ].geometry;  // url.
+                    object.geometry  = json[ key ].geometry;  // (url).
 
                 //  Scale.
                     var vector = new THREE.Vector3();
@@ -764,7 +767,7 @@
                         var clone = response.clone();
                         await cache.put( object.geometry, clone );
 
-                        return response.json();         //  important!
+                        return response.json();
 
                     }).then(function(gson){
 
@@ -778,8 +781,10 @@
                         geometry.computeVertexNormals();
                         geometry.computeBoundingBox();
                         geometry.computeBoundingSphere();
-                        geometry.sourceFile = object.geometry;    // important!
+                        geometry.sourceFile = object.geometry;  // important!
+
                         var skinned = new THREE.SkinnedMesh( geometry, material );
+
                         skinned.renderDepth = 1;
                         skinned.frustumCulled = false;
                         skinned.position.set( 0, 0, 0 );
@@ -789,9 +794,10 @@
                         skinned.name = object.name;
                         skinned.sortIndex = sortIndex;
 
-                    //  "this.add()" refresh each time.
-                        resolve( self.add({[key]: skinned}) );
+                    //  ".add()" refreshes each time.
+
                         outfit[ key ] = skinned;
+                        resolve( self.add({[key]: skinned}) );
 
                     });
 
