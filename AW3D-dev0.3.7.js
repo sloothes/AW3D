@@ -994,8 +994,8 @@
             for (var i in arguments){
                 var name = arguments[i];
                 this.actions[ name ].weight = 1;
+                this.actions[ name ].timeScale = 1; // this.actions[name].data.length; // ???bug??? //
                 this.actions[ name ].currentTime = 0;
-                this.actions[ name ].timeScale = this.actions[name].data.length;
             }
         },
 
