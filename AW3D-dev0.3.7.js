@@ -391,9 +391,23 @@
             //  this[ name ] = asset.clone();
                 this.direction.add( this[ name ] );
 
+            //  Animations.
+            
+            //  Create outfit item animation handler.
+            //  Get the animation handler that outfit is playing.
+            //  Start handler playing from animation current time.
+            //  Push handler to outfit animation handlers.
+
+            /*
+                var handler = new AW3D.AnimationsHandler(this[name], this.getGender());
+                var actionName = THREE.AnimationHandler.animations[0].data.name;
+                handler.play[actionName];
+                this.AnimationsHandler.push( handler );
+            */
+
             }
 
-            this.AnimationsHandler.refresh(); 
+        //  this.AnimationsHandler.refresh(); 
 
         //  Send "change" event only when last 
         //  add has been completed (delay:100ms).
@@ -428,9 +442,13 @@
                 !!this[ name ] && !!this[ name ].skeleton 
                 && this[ name ].skeleton.boneTexture.dispose();
 
+            //  TODO: Remove animation handler.
+
             //  this[ name ] = null;
                 delete this[ name ];    
             }
+
+            this.AnimationsHandler.refresh(); 
 
         //  Send "change" event only when last 
         //  remove has been completed (delay:100ms).
