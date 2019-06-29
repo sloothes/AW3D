@@ -262,7 +262,7 @@
             this.fill(null);
             this.reset();
     
-            this.slots.forEach( function(name, i){
+            self.slots.forEach( function(name, i){
 
                 if ( !!self[ name ] ){
     
