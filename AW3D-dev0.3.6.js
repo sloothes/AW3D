@@ -448,16 +448,16 @@
 
             if ( arguments.length == 0 ) {
 
-            //  "outfits" has been renamed to "slots"
                 this.slots.forEach( ( name ) => {
                     this.remove( name );
                 });
 
             } else {
 
-                for (var i in arguments){
-                    this.remove( name );
+                for (var arg in arguments){
+                    this.remove( arguments[arg] );
                 }
+
             }
 
             return this;
@@ -973,8 +973,8 @@
             for (var i in arguments){
                 var name = arguments[i];
                 this.actions[ name ].weight = 1;
+                this.actions[ name ].timeScale = 1;
                 this.actions[ name ].currentTime = 0;
-                this.actions[ name ].timeScale = 1;  // this.actions[name].data.length; // ???bug??? //
             }
         },
 
@@ -1021,7 +1021,7 @@
                 var name = arguments[i];
                 var action = this.actions[ name ];
                 this.findAction( action ).forEach(function(animation){
-                    animation.timeScale = animation.data.length;
+                    animation.timeScale = 1;
                 });
             }
         },
