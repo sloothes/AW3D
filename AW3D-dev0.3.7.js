@@ -457,7 +457,7 @@
                     this[ name ].skeleton.boneTexture.dispose();
 
             //  Remove the animation handler.
-                debugMode && console.log("animation handlers:", this.AnimationsHandler.length});
+                debugMode && console.log("animation handlers:", this.AnimationsHandler.length);
 
                 if ( this.AnimationsHandler.length ) {
                 //  Find handler index.
