@@ -72,6 +72,11 @@
 
     AW3D.OutfitManager = function(){
 
+        var self = this;
+
+        this.eventTimeout = undefined;
+        this.direction = new THREE.Object3D();
+
         try {
 
         //  signals.js
@@ -83,10 +88,6 @@
 
             console.warn(err);
         }
-
-
-        this.eventTimeout = undefined;
-        this.direction = new THREE.Object3D();
 
         this.gender = {
             male    : false,
@@ -267,26 +268,23 @@
             }
         };
 
-        var outfit = this;
-
         this.AnimationsHandler.refresh = function(){
 
             this.stop();
             this.fill(null);
             this.reset();
     
-        //  "outfits" has been renamed to "slots".
-            outfit.slots.forEach( function(name, i){
+            this.slots.forEach( function(name, i){
 
-                if ( !!outfit[ name ] ){
+                if ( !!self[ name ] ){
     
-                    var handler = new AW3D.AnimationHandler( outfit[ name ], outfit.getGender() );
+                    var handler = new AW3D.AnimationHandler( self[ name ], self.getGender() );
 
-                    outfit.AnimationsHandler.push( handler );
+                    self.AnimationsHandler.push( handler );
                 }
             });
     
-            outfit.AnimationsHandler.play("idle");
+            self.AnimationsHandler.play("idle");
     
         };
 
