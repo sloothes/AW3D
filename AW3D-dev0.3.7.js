@@ -457,8 +457,9 @@
                     this[ name ].skeleton.boneTexture.dispose();
 
             //  Remove the animation handler.
-                debugMode && console.log({"AnimationsHandler":this.AnimationsHandler});
-                if ( this.AnimationsHandler ) {
+                debugMode && console.log("animation handlers:", this.AnimationsHandler.length});
+
+                if ( this.AnimationsHandler.length ) {
                 //  Find handler index.
                     var index = this.AnimationsHandler.findIndex(function(handler){
                         return handler.mesh == this[ name ];
@@ -469,7 +470,6 @@
 
                 //  Stop handler animations.
                     handler.stop();
-
                 }
 
             //  Delete slot.
