@@ -946,21 +946,24 @@
         constructor: AW3D.AnimationHandler,
 
         findAction: function(action){
+        //  BE CAREFULL: returns new array with resutls.
             return THREE.AnimationHandler.animations.filter( function(animation){
                 return (animation == action); // boolean.
-            }); // BE CAREFULL: returns new array with resutls.
+            }); 
         },
 
         findByUuid: function( name ){
+        //  BE CAREFULL: returns new array with resutls.
             return THREE.AnimationHandler.animations.filter( function(animation){
                 return (animation.uuid == this.actions[ name ].uuid); // boolean.
-            }); // BE CAREFULL: returns new array with resutls.
+            });
         },
 
         findByName: function( name ){
+        //  BE CAREFULL: returns new array with resutls.
             return THREE.AnimationHandler.animations.filter( function(animation){
                 return (animation.data.name == name); // boolean.
-            }); // BE CAREFULL: returns new array with resutls.
+            });
         },
 
     //  To stop an animation, find the animation in
