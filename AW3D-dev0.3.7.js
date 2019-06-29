@@ -261,18 +261,20 @@
             this.stop();
             this.fill(null);
             this.reset();
-    
+
+            var gender = self.getGender();
+
             self.slots.forEach( function(name, i){
 
                 if ( !!self[ name ] ){
     
-                    var handler = new AW3D.AnimationHandler( self[ name ], self.getGender() );
+                    var handler = new AW3D.AnimationHandler( self[ name ], gender );
 
                     self.AnimationsHandler.push( handler );
                 }
             });
     
-            self.AnimationsHandler.play("idle");
+            this.play("idle");
     
         };
 
