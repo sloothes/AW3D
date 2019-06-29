@@ -448,7 +448,7 @@
                 delete this[ name ];    
             }
 
-            this.AnimationsHandler.refresh(); 
+        //  this.AnimationsHandler.refresh(); 
 
         //  Send "change" event only when last 
         //  remove has been completed (delay:100ms).
