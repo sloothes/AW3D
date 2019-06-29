@@ -374,12 +374,12 @@
 
         add: function(){
 
-            for (var i in arguments) {
+            for (var arg in arguments) {
 
-                if (!arguments[i]) continue;
+                if (!arguments[arg]) continue;
 
-                var name = Object.keys(arguments[i])[0];
-                var asset = Object.values(arguments[i])[0];
+                var name = Object.keys(arguments[arg])[0];
+                var asset = Object.values(arguments[arg])[0];
             //  debugMode && console.log(name + ":", asset);
 
                 if ( !name || name == null || !asset ) continue;
@@ -387,26 +387,42 @@
 
                 this[ name ] = asset;
             //  this[ name ] = asset.clone();
-                this.direction.add( this[ name ] );
 
             //  Animations.
-            
-            //  Create outfit item animation handler.
-            //  Get the animation handler that outfit is playing.
-            //  Start handler playing from animation current time.
-            //  Push handler to outfit animation handlers.
+                if ( this.AnimationsHandler.length ) {
 
-            /*
-                var handler = new AW3D.AnimationsHandler(this[name], this.getGender());
-                var actionName = THREE.AnimationHandler.animations[0].data.name;
-                handler.play[actionName];
-                this.AnimationsHandler.push( handler );
-            */
+                //  Create an animation handler for this outfit slot.
+                    var handler = new AW3D.AnimationHandler( this[name], this.getGender() );
+
+                //  Copy each action properties of first animation handler.
+                    var masterHandler = this.AnimationsHandler[0];
+
+                    for ( var action in masterHandler.actions ) {
+                        if ( !action ) break;
+
+                        handler.actions[action].loop = masterHandler.actions[action].loop;
+                        handler.actions[action].timeScale = masterHandler.actions[action].timeScale;
+                        handler.actions[action].weight = masterHandler.actions[action].weight;
+                        handler.actions[action].isPlaying = masterHandler.actions[action].isPlaying;
+                        handler.actions[action].currentTime = masterHandler.actions[action].currentTime;
+                        handler.actions[action].interpolationType = masterHandler.actions[action].interpolationType;
+
+                    }
+
+                    this.AnimationsHandler.push( handler );
+
+                } else {
+
+                    this.AnimationsHandler.refresh();
+
+                }
+
+            //  Add to scene.
+                this.direction.add( this[ name ] );
 
             }
 
         //  this.AnimationsHandler.refresh(); 
-
         //  Send "change" event only when last 
         //  add has been completed (delay:100ms).
             var msec = 100;
@@ -962,6 +978,17 @@
             return THREE.AnimationHandler.animations.filter( function(animation){
                 return (animation.data.name == name); // boolean.
             });
+        },
+
+        getCurrentAction: function(){
+        //  returns current playing action name.
+            for (var name in this.actions) {
+                if ( !name ) return;
+                var action = this.actions[ name ];
+                if ( action.isPlaying ) {
+                    return name;
+                }
+            }
         },
 
     //  To stop an animation, find the animation in
