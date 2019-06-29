@@ -1031,14 +1031,14 @@
         },
 
     //  To unpause an animation, find the animation 
-    //  in THREE.AnimationHandler.animations and set timeScale to animation.data.length.
+    //  in THREE.AnimationHandler.animations and set timeScale to 1.
 
         continue: function(){
             for (var i in arguments){
                 var name = arguments[i];
                 var action = this.actions[ name ];
                 this.findAction( action ).forEach(function(animation){
-                    animation.timeScale = animation.data.length;
+                    animation.timeScale = 1;
                 });
             }
         },
@@ -1133,9 +1133,9 @@
             this.actions.walk.play(0);
         },
     
-    //  --------------------------------------------------------  //
-
+    //  -----------------------------------------------------  //
     //  IMPORTANT: This create the animations of skinned mesh.
+    //  -----------------------------------------------------  //
 
         loadAction: function(){
 
