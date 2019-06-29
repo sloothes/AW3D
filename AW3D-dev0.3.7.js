@@ -388,41 +388,41 @@
                 this[ name ] = asset;
             //  this[ name ] = asset.clone();
 
-            //  Animations.
-                if ( this.AnimationsHandler.length ) {
+            //  Animations handler.
 
-                //  Create an animation handler for this outfit slot.
-                    var handler = new AW3D.AnimationHandler( this[name], this.getGender() );
+            //  Create an animation handler for this outfit slot.
+                var handler = new AW3D.AnimationHandler( this[name], this.getGender() );
+
+                if ( this.AnimationsHandler.length ) {
 
                 //  Copy each action properties of first animation handler.
                     var masterHandler = this.AnimationsHandler[0];
 
-                    for ( var action in masterHandler.actions ) {
+                    for ( var action in handler.actions ) {
+
                         if ( !action ) break;
 
                         handler.actions[action].loop = masterHandler.actions[action].loop;
-                        handler.actions[action].timeScale = masterHandler.actions[action].timeScale;
                         handler.actions[action].weight = masterHandler.actions[action].weight;
-                        handler.actions[action].isPlaying = masterHandler.actions[action].isPlaying;
+                        handler.actions[action].timeScale = masterHandler.actions[action].timeScale;
                         handler.actions[action].currentTime = masterHandler.actions[action].currentTime;
                         handler.actions[action].interpolationType = masterHandler.actions[action].interpolationType;
+                        handler.actions[action].isPlaying = masterHandler.actions[action].isPlaying;
 
                     }
 
-                    this.AnimationsHandler.push( handler );
-
-                } else {
-
-                    this.AnimationsHandler.refresh();
-
                 }
 
-            //  Add to scene.
+            //  Add animation handler.
+                this.AnimationsHandler.push( handler );
+
+            //  Add outfit item to scene.
                 this.direction.add( this[ name ] );
 
             }
 
         //  this.AnimationsHandler.refresh(); 
+
         //  Send "change" event only when last 
         //  add has been completed (delay:100ms).
             var msec = 100;
@@ -439,27 +439,42 @@
 
             if ( arguments.length == 0 ) return;
 
-            for (var i in arguments){
+            for (var arg in arguments){
 
-                if ( !arguments[i] ) continue;
-                if ( !this.slots.includes( arguments[i] ) ) continue;
+                if ( !arguments[arg] ) continue;
+                if ( !this.slots.includes( arguments[arg] ) ) continue;
 
-                var name = arguments[i];
+                var name = arguments[arg];
 
             //  Remove from scene (does not throw error).
                 this.direction.remove( this[ name ] );
 
             //  Dispose geometry.
-                !!this[ name ] && this[ name ].geometry.dispose();
+                if ( this[ name ] ) this[ name ].geometry.dispose();
 
             //  Dispose bones texture. !important
-                !!this[ name ] && !!this[ name ].skeleton 
-                && this[ name ].skeleton.boneTexture.dispose();
+                if ( this[ name ] && this[ name ].skeleton  )
+                    this[ name ].skeleton.boneTexture.dispose();
 
-            //  TODO: Remove animation handler.
+            //  Remove the animation handler.
+                (function(name){
 
-            //  this[ name ] = null;
-                delete this[ name ];    
+                //  Find handler index.
+                    var index = this.AnimationsHandler.findIndex(function(handler){
+                        return handler.mesh == this[ name ];
+                    });
+
+                //  Get and remove handler from AnimationsHandler.
+                    var handler = this.AnimationsHandler.splice(index, 1)[0];
+
+                //  Stop handler animations.
+                    handler.stop();
+
+                })(name);
+
+            //  Delete slot.
+                delete this[ name ];
+
             }
 
         //  this.AnimationsHandler.refresh(); 
