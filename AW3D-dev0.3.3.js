@@ -1,4 +1,4 @@
-//  AW3D.js (v0.3.1 dev)
+//  AW3D.js (dev0.3.3)
 
     var debugMode;
 
@@ -8,7 +8,7 @@
     * MIT License
 */
 
-    var AW3D = { VERSION: "0.3.1 dev" };
+    var AW3D = { VERSION: "0.3.3 dev" };
 
 //  Player Holder.
     AW3D.PlayerHolder = function ( name ){
@@ -91,10 +91,10 @@
     //  Layers. (aparts-holders).
 
         this.layers = [
-            "body",  // body.
+            "body",
             "head",
             "face",
-            "hairs", // hairs.
+            "hairs",
             "upper", // chest.
             "lower", // hips.
             "torso", // (chest & hips).
@@ -111,11 +111,11 @@
         this.slots = [
             "body",
             "hairs",
-            "eyes",       // added.
-            "hat",        // added.
-            "glasses",    // added.
-            "stockings",  // replace "stocking".
-            "underwears", // added.
+            "eyes",
+            "hat",
+            "glasses",
+            "stockings",
+            "underwears",
             "tshirt",
             "skirt",
             "trousers",
@@ -285,24 +285,6 @@
 
         constructor: AW3D.OutfitManager,
 
-/*
-        update: function(){
-
-        //  Update avatar rotation y.
-            var direction = player.controller.direction - Math.PI;
-
-        //  "this" is the "player.outfit"
-            this.direction.rotation.y = direction;
-
-        //  Update avatar position.
-            var x = player.controller.center.x;
-            var y = player.controller.center.y - player.controller.radius;
-            var z = player.controller.center.z;
-
-            this.direction.position.set( x, y, z );
-        },
-*/
-
         refresh: function(){
             this.AnimationsHandler.refresh();
         },
@@ -372,6 +354,8 @@
             this.eventTimeout = setTimeout( () => {
                 this.dispatchEvent( {type:"change"} );
             }, timeout);
+
+            return this;
 
         },
 
@@ -566,6 +550,7 @@
             return this;
         },
 
+    /*
         getdata: function( name ){
 
             if ( !name ) return;
@@ -580,52 +565,11 @@
             data[ name ].scale     = this[ name ].scale.toArray();
             data[ name ].geometry  = this[ name ].geometry.sourceFile;
 
-            //  Validation.
 
-            if (!!validator) {
-                var err = "Can not create JSON. One or more textures source url are missing.";
+        //  Validation...
 
-                if ( !!this[ name ].material.materials ) {
-                    this[ name ].material.materials.forEach( function(material, i){
-                        if (!!material.map && typeof(material.map.sourceFile) == "string" && !validator.isURL(material.map.sourceFile) ) throw Error(err);
-                        if (!!material.aoMap && typeof(material.aoMap.sourceFile) == "string" && !validator.isURL(material.aoMap.sourceFile) ) throw Error(err);
-                        if (!!material.envMap && typeof(material.envMap.sourceFile) == "string" && !validator.isURL(material.envMap.sourceFile) ) throw Error(err);
-                        if (!!material.bumpMap && typeof(material.bumpMap.sourceFile) == "string" && !validator.isURL(material.bumpMap.sourceFile) ) throw Error(err);
-                        if (!!material.alphaMap && typeof(material.alphaMap.sourceFile) == "string" && !validator.isURL(material.alphaMap.sourceFile) ) throw Error(err);
-                        if (!!material.lightMap && typeof(material.lightMap.sourceFile) == "string" && !validator.isURL(material.lightMap.sourceFile) ) throw Error(err);
-                        if (!!material.normalMap && typeof(material.normalMap.sourceFile) == "string" && !validator.isURL(material.normalMap.sourceFile) ) throw Error(err);
-                        if (!!material.emissiveMap && typeof(material.emissiveMap.sourceFile) == "string" && !validator.isURL(material.emissiveMap.sourceFile) ) throw Error(err);
-                        if (!!material.specularMap && typeof(material.specularMap.sourceFile) == "string" && !validator.isURL(material.specularMap.sourceFile) ) throw Error(err);
-                        if (!!material.roughnessMap && typeof(material.roughnessMap.sourceFile) == "string" && !validator.isURL(material.roughnessMap.sourceFile) ) throw Error(err);
-                        if (!!material.metalnessMap && typeof(material.metalnessMap.sourceFile) == "string" && !validator.isURL(material.metalnessMap.sourceFile) ) throw Error(err);
-                        if (!!material.displacementMap && typeof(material.displacementMap.sourceFile) == "string" && !validator.isURL(material.displacementMap.sourceFile) ) throw Error(err);
-                    });
 
-                } else {
-
-                    var material = this[ name ].material;
-                    if (!!material.map && typeof(material.map.sourceFile) == "string" && !validator.isURL(material.map.sourceFile) ) throw Error(err);
-                    if (!!material.aoMap && typeof(material.aoMap.sourceFile) == "string" && !validator.isURL(material.aoMap.sourceFile) ) throw Error(err);
-                    if (!!material.envMap && typeof(material.envMap.sourceFile) == "string" && !validator.isURL(material.envMap.sourceFile) ) throw Error(err);
-                    if (!!material.bumpMap && typeof(material.bumpMap.sourceFile) == "string" && !validator.isURL(material.bumpMap.sourceFile) ) throw Error(err);
-                    if (!!material.alphaMap && typeof(material.alphaMap.sourceFile) == "string" && !validator.isURL(material.alphaMap.sourceFile) ) throw Error(err);
-                    if (!!material.lightMap && typeof(material.lightMap.sourceFile) == "string" && !validator.isURL(material.lightMap.sourceFile) ) throw Error(err);
-                    if (!!material.normalMap && typeof(material.normalMap.sourceFile) == "string" && !validator.isURL(material.normalMap.sourceFile) ) throw Error(err);
-                    if (!!material.emissiveMap && typeof(material.emissiveMap.sourceFile) == "string" && !validator.isURL(material.emissiveMap.sourceFile) ) throw Error(err);
-                    if (!!material.specularMap && typeof(material.specularMap.sourceFile) == "string" && !validator.isURL(material.specularMap.sourceFile) ) throw Error(err);
-                    if (!!material.roughnessMap && typeof(material.roughnessMap.sourceFile) == "string" && !validator.isURL(material.roughnessMap.sourceFile) ) throw Error(err);
-                    if (!!material.metalnessMap && typeof(material.metalnessMap.sourceFile) == "string" && !validator.isURL(material.metalnessMap.sourceFile) ) throw Error(err);
-                    if (!!material.displacementMap && typeof(material.displacementMap.sourceFile) == "string" && !validator.isURL(material.displacementMap.sourceFile) ) throw Error(err);
-
-                }
-
-            } else {
-
-                console.warn("Can not validate texture source.");
-
-            }
-
-            //  Materials.
+        //  Materials.
 
             data[ name ].materials = [];
 
@@ -637,6 +581,7 @@
 
             } else {
 
+                var material = this[ name ].material;
                 data[ name ].materials.push( toJSON(material) );
 
             }
@@ -697,6 +642,8 @@
             }
         },
 
+    */
+
         getPose: function( name ){
 
             var name = name || "body";
@@ -724,24 +671,45 @@
             if ( arguments.length == 0 ) {
 
                 for (var i = 0; i < this.slots.length; i++) {
+
                     var name = this.slots[i];
-                    if ( !!this[ name ] ) {
-                        data[ name ] = this.getdata( name );
-                    }
+
+                    if ( !name ) continue;
+                    if ( !this[ name ] ) continue;
+                    if ( !this.slots.includes( name ) ) continue;
+
+                    data[ name ] = {};
+                    data[ name ].name      = name;
+                    data[ name ].visible   = this[ name ].visible;
+                    data[ name ].scale     = this[ name ].scale.toArray();
+                    data[ name ].geometry  = this[ name ].geometry.sourceFile;
+                    data[ name ].material = materialtoJSON( this[ name ].material );
+
                 }
 
             } else {
 
                 for (var i = 0; i < arguments.length; i++){
+
                     var name = arguments[i];
-                    if ( !!this[ name ] ) {
-                        data[ name ] = this.getdata( name );
-                    }
+
+                    if ( !name ) continue;
+                    if ( !this[ name ] ) continue;
+                    if ( !this.slots.includes( name ) ) continue;
+
+                    data[ name ] = {};
+                    data[ name ].name      = name;
+                    data[ name ].visible   = this[ name ].visible;
+                    data[ name ].scale     = this[ name ].scale.toArray();
+                    data[ name ].geometry  = this[ name ].geometry.sourceFile;
+                    data[ name ].material = materialtoJSON( this[ name ].material );
+
                 }
 
             }
 
-            data.gender = this.getGender();
+            if ( this.getGender() ) 
+                data.gender = this.getGender();
 
             var data = JSON.stringify( data );
 
@@ -798,16 +766,78 @@
             var json = JSON.parse( json ); // (is a copy of json).
             debugMode && console.log( "json:", json );
 
-
             var self = this;
 
         //  Get gender first.
-            var gender = json.gender; // important!
 
-        //  Clear gender of json. 
+            this.removeAll();          // important!
+            var gender = json.gender;  // important!
+            this.setGender( gender );  // important!
+
+        //  Clear gender of json.
             delete json.gender; // (is a copy of json).
 
+        //  Recover from json.
 
+            for ( var key in json ) {
+
+                (function(key){
+
+                    var object = {};
+
+                    object.name      = json[ key ].name;
+                    object.visible   = json[ key ].visible;
+                    object.material  = json[ key ].material;
+                    object.geometry  = json[ key ].geometry;  // url.
+                    var vector = new THREE.Vector3();
+                    object.scale = vector.fromArray( json[ key ].scale );
+
+                //  Copy geometry url to prevent overwritting?
+                //  var url = object.geometry;
+                //  debugMode && console.log({[`${key} object`]:object});
+
+                //  Material.
+
+                    var material = materialfromJSON( object.material );
+                //  debugMode && console.log({[`${key} material`]:material});
+
+                //  Geometry.
+
+                    w3.getHttpObject( object.geometry, function( obj ){
+
+                        var loader = new THREE.JSONLoader();
+                        var geometry = loader.parse( obj ).geometry;
+
+                        geometry.sourceFile = object.geometry;  // important!
+
+                        geometry.computeFaceNormals();
+                        geometry.computeVertexNormals();
+                        geometry.computeBoundingBox();
+                        geometry.computeBoundingSphere();
+                        geometry.name = obj.name;
+
+                        var skinned = new THREE.SkinnedMesh( geometry, material );
+
+                        skinned.renderDepth = 1;
+                        skinned.frustumCulled = false;
+                        skinned.position.set( 0, 0, 0 );
+                        skinned.rotation.set( 0, 0, 0 );
+                        skinned.scale.copy( object.scale );
+                        skinned.visible = object.visible; // overwrite object.visible = true.
+                        skinned.castShadow = true;
+
+                        self.add({[key]: skinned});
+                        self.AnimationsHandler.refresh();
+
+                    });
+
+                })(key);
+
+            }
+
+        },
+
+/*
         //  Re-generation.
 
             var promises = [];
@@ -851,15 +881,18 @@
                 //  Copy json properties, to prevent overwritting.       //  IMPORTANT  //
 
                 var object = {};
+
                 object.name      = json[ key ].name;
                 object.visible   = json[ key ].visible;
                 object.materials = json[ key ].materials;
-                object.geometry  = json[ key ].geometry;  // url
+                object.geometry  = json[ key ].geometry;  // url.
+
                 object.scale = new THREE.Vector3().fromArray( json[ key ].scale );
 
             //  Copy key to prevent overwritting.
+
                 var url = object.geometry;
-                debugMode && console.log("%s: %s", key, url);
+                debugMode && console.log(`${key}: ${url}`);
 
                 return new Promise( function( resolve, reject ){
 
@@ -951,7 +984,14 @@
 
                     promises.push( Promise.all(materials).then(function( result ){
 
-                        var multimaterial = new THREE.MeshFaceMaterial( result ); // <-- MultiMaterial.
+                        if ( result.length == 0 )
+                            var material = new THREE.MeshStandardMaterila({skinning:true});
+
+                        if ( result.length == 1 ) 
+                            var material = result[0];
+
+                        if ( result.length > 1 )
+                            var material = new THREE.MeshFaceMaterial( result );  //  MultiMaterial.
 
                     //  Geometry.
 
@@ -959,14 +999,17 @@
 
                             var loader = new THREE.JSONLoader();
                             var geometry = loader.parse( obj ).geometry;
-                            geometry.sourceFile = url;       // IMPORTANT //
+
+                            geometry.sourceFile = url;  // important!
+
                             geometry.computeFaceNormals();
                             geometry.computeVertexNormals();
                             geometry.computeBoundingBox();
                             geometry.computeBoundingSphere();
                             geometry.name = obj.name;
 
-                            var skinned = new THREE.SkinnedMesh( geometry, multimaterial );
+                            var skinned = new THREE.SkinnedMesh( geometry, material );
+
                             skinned.renderDepth = 1;
                             skinned.frustumCulled = false;
                             skinned.position.set( 0, 0, 0 );
@@ -990,7 +1033,7 @@
         },
 
         //  end fromJSON.
-
+*/
 
 //  Outfit DNA is an object that contains the outfit data that needed to
 //  re-create the player oufit anywhere remotly. It is player outfit assets
@@ -1401,4 +1444,513 @@
         };
         return shift(Math.round(shift(number, precision, false)), precision, true);
     }
+
+
+
+
+//  materialtoJson.js (v1.4)
+
+//  MATERIAL TO JSON.
+//  Return a promise with the 
+//  material json object resolved.
+
+    function materialtoJSON( material ){
+
+
+    //  MULTIMATERIAL.
+
+        if ( material.type == "MultiMaterial" ) {
+
+
+        //  multimaterial to json.
+
+            var multjson = {
+
+                _id: "",
+                type: material.type,
+                uuid: material.uuid || THREE.Math.generateUUID(),
+
+            };
+
+
+        //  materials to json.
+
+            multjson.materials = [];
+
+            for ( var i = 0; i < material.materials.length; i++ ){
+
+                multjson.materials.push( materialtoJSON( material.materials[i] ) );
+
+            }
+
+
+            debugMode && console.log( "multimaterial to json:", multjson );
+
+            return multjson;
+
+        }
+
+
+    //  MATERIAL.
+
+        var json = {};
+
+        for ( var name in material ){
+
+            if ( material[ name ] == undefined ) continue;         // important!
+            if ( material[ name ] instanceof Function ) continue;  // important!
+
+            switch( name ){
+
+                case "defines":
+                case "program":
+                case "_listeners":
+                case "needsUpdate":
+                case "_needsUpdate":
+                case "__webglShader":
+                break;
+
+
+            //  uuid.
+
+                case "uuid":
+                    json.uuid = material.uuid || THREE.Math.generateUUID();
+                break;
+
+
+            //  name && _id.
+
+                case "name":
+                    json._id = material[ name ];
+                    json[ name ] = material[ name ];
+                break;
+
+
+            //  default.
+
+                default:
+                    json[ name ] = material[ name ];
+                break;
+
+
+            //  texture to json.
+
+                case "map":
+                case "bumpMap":
+                case "alphaMap":
+                case "normalMap":
+                case "emissiveMap":
+                case "displacementMap":
+                case "metalnessMap":
+                case "roughnessMap":
+                case "specularMap":
+                case "lightMap":
+                case "aoMap":
+
+                    if ( !(material[ name ] instanceof THREE.Texture) ) {
+                        throw `${name} is not instance of THREE.Texture`;
+                    }
+
+                    json[ name ] = texturetoJSON( material[ name ] );
+
+                break;
+
+
+            //  three color to hex.
+
+                case "color":
+                case "emissive":
+                case "specular":
+
+                    if ( !(material[ name ] instanceof THREE.Color) ) {
+                        throw `${name} is not instance of THREE.Color`;
+                    }
+
+                    json[ name ] = material[ name ].getHex();
+
+                break;
+
+
+            //  vector2 to array.
+
+                case "normalScale":
+
+                    if ( !(material[ name ] instanceof THREE.Vector2) ) {
+                        throw `${name} is not instance of THREE.Vector2`;
+                    }
+
+                    json[ name ] = material[ name ].toArray();
+
+                break;
+
+
+            //  cube texture (TODO).
+
+                case "envMap":
+
+                    // TODO //
+
+                break;
+
+            }
+
+        }
+
+
+    //  debugMode && console.log({"material to json": json});
+
+        return json;
+
+    }
+
+
+//  TEXTURE TO JSON.
+//  Return a promise resolved 
+//  with the texture json object.
+
+    function texturetoJSON( texture ){
+
+        var json = {};
+
+        for (var name in texture ){
+
+            if ( texture[ name ] == undefined ) continue;
+            if ( texture[ name ] instanceof Function ) continue;
+
+
+            switch (name){
+
+                case "_listeners":
+                break;
+
+
+            //  uuid.
+
+                case "uuid":
+                    json[ name ] = texture[ name ] || THREE.Math.generateUUID();
+                break;
+
+
+            //  default.
+
+                default:
+                    json[ name ] = texture[ name ];
+                break;
+
+
+            //  vector2 to array.
+
+                case "offset":
+                case "repeat":
+                    json[ name ] = texture[ name ].toArray();
+                break;
+
+
+            //  image to json.
+
+                case "image":
+                    json[ name ] = texture.sourceFile || getDataURL( texture[ name ] ); // important!
+                break;
+
+            }
+
+        }
+
+        return json;
+
+    }
+
+
+//  IMAGE TO JSON.
+//  Return a promise with the 
+//  image json object resolved.
+
+    function imagetoJSON( image ){
+
+        return {
+            uuid: THREE.Math.generateUUID(),
+            src: image.src || getDataURL( image ),
+        };
+
+    }
+
+
+
+//  materialfromJson.js (v1.4)
+
+//  MATERIAL FROM JSON.
+//  Return a promise with the material resolved.
+
+    function materialfromJSON( json ){
+
+   //  MULTIMATERIAL.
+
+       if ( json.type == "MultiMaterial" ) {
+
+
+           var materials = [];
+
+           for ( var i = 0; i < json.materials.length; i++ ){
+
+               materials.push( materialfromJSON( json.materials[i] ) );
+
+           }
+
+
+       //  Create multimaterial.
+
+           var multimaterial = new THREE.MeshFaceMaterial(materials);
+
+           multimaterial.uuid = json.uuid || THREE.Math.generateUUID();
+
+           return multimaterial;
+
+        }
+
+
+    //  MATERIAL.
+
+        var options = {};
+
+        for (var name in json){
+
+            if ( json[ name ] == undefined ) continue; // important!
+
+            switch (name){
+
+                case "_id":
+                break;
+
+            //  uuid.
+
+                case "uuid":
+                    options.uuid = json.uuid || THREE.Math.generateUUID();
+                break;
+
+
+            //  default.
+
+                default:
+                    options[ name ] = json[ name ];
+                break;
+
+
+            //  texture from json.
+
+                case "alphaMap":
+                case "aoMap":
+                case "bumpMap":
+                case "displacementMap":
+                case "emissiveMap":
+                case "lightMap":
+                case "map":
+                case "metalnessMap":
+                case "normalMap":
+                case "roughnessMap":
+                case "specularMap":
+
+                        options[ name ] = texturefromJSON( json[ name ] );
+
+                break;
+
+
+            //  three color to hex.
+
+                case "color":
+                case "emissive":
+                case "specular":
+
+                    options[ name ] = new THREE.Color();
+                    options[ name ].setHex( json[ name ] );
+
+                break;
+
+
+            //  vector2 from array.
+
+                case "normalScale":
+
+                    options[ name ] = new THREE.Vector2();
+                    options[ name ].fromArray( json[ name ] );
+
+                break;
+
+
+            //  cube texture (TODO).
+
+                case "envMap":
+
+                    // TODO //
+
+                break;
+
+            }
+
+        }
+
+        return new THREE[ options.type ](options);
+
+    }
+
+//  TEXTURE FROM JSON.
+//  Return a promise with the texture resolved.
+
+    function texturefromJSON( json ){
+
+        var texture = new THREE.Texture();
+
+        for ( var name in json ){
+
+
+            switch (name){
+
+
+            //  default.
+
+                default:
+                    texture[ name ] = json[ name ];
+                break;
+
+
+            //  array to vector2.
+
+                case "offset":
+                case "repeat":
+
+                    if ( json[ name ].length != 2) break;
+
+                    texture[ name ] = new THREE.Vector2();
+                    texture[ name ].fromArray( json[ name ] );
+
+                break;
+
+
+            //  wrapS & wrapT.
+
+                case "wrap":
+
+                    if ( json[ name ].length != 2) break;
+                    if ( !( json[ name ] instanceof Array ) ) break;
+
+                    texture.wrapS = json[ name ][0];
+                    texture.wrapT = json[ name ][1];
+
+                break;
+
+
+            //  image from json.
+
+                case "image":
+
+                    (function (){
+
+                        var img = new Image();
+                        img.crossOrigin = "anonymous";
+                        $(img).one("load", function(){
+                            texture.image = this;
+                            texture.needsUpdate = true;
+                        }).attr({src: json.image});
+
+                    })();
+
+                break;
+
+            }
+
+        }
+
+        return texture;
+
+    }
+
+//  IMAGE FROM JSON.
+//  Return a promise with the image resolved.
+
+    function imagefromJSON( json, onImageLoad ){
+
+        var img = new Image();
+        img.crossOrigin = "anonymous";
+
+        if ( onImageLoad ) {
+            img.addEventListener("load", onImageLoad);
+        }
+
+        img.src = json.src;
+
+        return img;
+
+    }
+
+//  makePowerOfTwo.js
+
+    function makePowerOfTwo( image, natural ) {
+
+        var canvas = document.createElement( "canvas" );
+
+        if ( natural ){
+            canvas.width = THREE.Math.nearestPowerOfTwo( image.naturalWidth );
+            canvas.height = THREE.Math.nearestPowerOfTwo( image.naturalHeight );
+        } else {
+            canvas.width = THREE.Math.nearestPowerOfTwo( image.width );
+            canvas.height = THREE.Math.nearestPowerOfTwo( image.height );
+        }
+
+        var context = canvas.getContext( "2d" );
+        context.drawImage( image, 0, 0, canvas.width, canvas.height );
+
+    //  debugMode && console.warn( "outfitLoader:makePowerOfTwo(img):", 
+    //  "Image resized to:", canvas.width, "x", canvas.height );
+
+        return canvas;
+    }
+
+//  getDataURL.js
+
+    function getDataURL( image ) {
+
+        var canvas;
+
+        if ( image.toDataURL !== undefined ) {
+
+            canvas = image;
+
+        } else {
+
+            canvas = document.createElementNS( 'http://www.w3.org/1999/xhtml', 'canvas' );
+            canvas.width = image.width;
+            canvas.height = image.height;
+
+            canvas.getContext( '2d' ).drawImage( image, 0, 0, image.width, image.height );
+
+        }
+
+        if ( canvas.width > 2048 || canvas.height > 2048 ) {
+
+            return canvas.toDataURL( 'image/jpeg', 0.6 );
+
+        } else {
+
+            return canvas.toDataURL( 'image/png' );
+
+        }
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

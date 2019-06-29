@@ -1,4 +1,4 @@
-//  AW3D.js (v0.3.1 dev)
+//  AW3D.js (dev0.3.2)
 
     var debugMode;
 
@@ -8,7 +8,7 @@
     * MIT License
 */
 
-    var AW3D = { VERSION: "0.3.1 dev" };
+    var AW3D = { VERSION: "0.3.2 dev" };
 
 //  Player Holder.
     AW3D.PlayerHolder = function ( name ){
@@ -91,10 +91,10 @@
     //  Layers. (aparts-holders).
 
         this.layers = [
-            "body",  // body.
+            "body",
             "head",
             "face",
-            "hairs", // hairs.
+            "hairs",
             "upper", // chest.
             "lower", // hips.
             "torso", // (chest & hips).
@@ -111,11 +111,11 @@
         this.slots = [
             "body",
             "hairs",
-            "eyes",       // added.
-            "hat",        // added.
-            "glasses",    // added.
-            "stockings",  // replace "stocking".
-            "underwears", // added.
+            "eyes",
+            "hat",
+            "glasses",
+            "stockings",
+            "underwears",
             "tshirt",
             "skirt",
             "trousers",
@@ -285,24 +285,6 @@
 
         constructor: AW3D.OutfitManager,
 
-/*
-        update: function(){
-
-        //  Update avatar rotation y.
-            var direction = player.controller.direction - Math.PI;
-
-        //  "this" is the "player.outfit"
-            this.direction.rotation.y = direction;
-
-        //  Update avatar position.
-            var x = player.controller.center.x;
-            var y = player.controller.center.y - player.controller.radius;
-            var z = player.controller.center.z;
-
-            this.direction.position.set( x, y, z );
-        },
-*/
-
         refresh: function(){
             this.AnimationsHandler.refresh();
         },
@@ -372,6 +354,8 @@
             this.eventTimeout = setTimeout( () => {
                 this.dispatchEvent( {type:"change"} );
             }, timeout);
+
+            return this;
 
         },
 
@@ -580,12 +564,15 @@
             data[ name ].scale     = this[ name ].scale.toArray();
             data[ name ].geometry  = this[ name ].geometry.sourceFile;
 
+        /*
             //  Validation.
 
             if (!!validator) {
+
                 var err = "Can not create JSON. One or more textures source url are missing.";
 
                 if ( !!this[ name ].material.materials ) {
+
                     this[ name ].material.materials.forEach( function(material, i){
                         if (!!material.map && typeof(material.map.sourceFile) == "string" && !validator.isURL(material.map.sourceFile) ) throw Error(err);
                         if (!!material.aoMap && typeof(material.aoMap.sourceFile) == "string" && !validator.isURL(material.aoMap.sourceFile) ) throw Error(err);
@@ -624,6 +611,7 @@
                 console.warn("Can not validate texture source.");
 
             }
+        */
 
             //  Materials.
 
@@ -637,6 +625,7 @@
 
             } else {
 
+                var material = this[ name ].material;
                 data[ name ].materials.push( toJSON(material) );
 
             }
@@ -851,15 +840,18 @@
                 //  Copy json properties, to prevent overwritting.       //  IMPORTANT  //
 
                 var object = {};
+
                 object.name      = json[ key ].name;
                 object.visible   = json[ key ].visible;
                 object.materials = json[ key ].materials;
-                object.geometry  = json[ key ].geometry;  // url
+                object.geometry  = json[ key ].geometry;  // url.
+
                 object.scale = new THREE.Vector3().fromArray( json[ key ].scale );
 
             //  Copy key to prevent overwritting.
+
                 var url = object.geometry;
-                debugMode && console.log("%s: %s", key, url);
+                debugMode && console.log(`${key}: ${url}`);
 
                 return new Promise( function( resolve, reject ){
 
@@ -951,7 +943,14 @@
 
                     promises.push( Promise.all(materials).then(function( result ){
 
-                        var multimaterial = new THREE.MeshFaceMaterial( result ); // <-- MultiMaterial.
+                        if ( result.length == 0 )
+                            var material = new THREE.MeshStandardMaterila({skinning:true});
+
+                        if ( result.length == 1 ) 
+                            var material = result[0];
+
+                        if ( result.length > 1 )
+                            var material = new THREE.MeshFaceMaterial( result );  //  MultiMaterial.
 
                     //  Geometry.
 
@@ -959,14 +958,17 @@
 
                             var loader = new THREE.JSONLoader();
                             var geometry = loader.parse( obj ).geometry;
-                            geometry.sourceFile = url;       // IMPORTANT //
+
+                            geometry.sourceFile = url;  // important!
+
                             geometry.computeFaceNormals();
                             geometry.computeVertexNormals();
                             geometry.computeBoundingBox();
                             geometry.computeBoundingSphere();
                             geometry.name = obj.name;
 
-                            var skinned = new THREE.SkinnedMesh( geometry, multimaterial );
+                            var skinned = new THREE.SkinnedMesh( geometry, material );
+
                             skinned.renderDepth = 1;
                             skinned.frustumCulled = false;
                             skinned.position.set( 0, 0, 0 );
@@ -1081,6 +1083,23 @@
 
     };
 
+/*
+        update: function(){
+
+        //  Update avatar rotation y.
+            var direction = player.controller.direction - Math.PI;
+
+        //  "this" is the "player.outfit"
+            this.direction.rotation.y = direction;
+
+        //  Update avatar position.
+            var x = player.controller.center.x;
+            var y = player.controller.center.y - player.controller.radius;
+            var z = player.controller.center.z;
+
+            this.direction.position.set( x, y, z );
+        },
+*/
 
 //  AW3D AnimationHandler.js
 

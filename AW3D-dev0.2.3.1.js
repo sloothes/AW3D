@@ -1066,8 +1066,8 @@
             for (var i in arguments){
                 var name = arguments[i];
                 this.actions[ name ].weight = 1;
+                this.actions[ name ].timeScale = 1;
                 this.actions[ name ].currentTime = 0;
-                this.actions[ name ].timeScale = this.actions[name].data.length;
             }
         },
 
@@ -1107,14 +1107,14 @@
         },
 
     //  To unpause an animation, find the animation 
-    //  in THREE.AnimationHandler.animations and set timeScale to animation.data.length.
+    //  in THREE.AnimationHandler.animations and set timeScale to 1.
 
         continue: function(){
             for (var i in arguments){
                 var name = arguments[i];
                 var action = this.actions[ name ];
                 this.findAction( action ).forEach(function(animation){
-                    animation.timeScale = animation.data.length;
+                    animation.timeScale = 1;
                 });
             }
         },
