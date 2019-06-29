@@ -411,6 +411,10 @@
 
                     }
 
+                } else {
+
+                    this.AnimationsHandler.play("idle");
+
                 }
 
             //  Add animation handler.
