@@ -460,6 +460,7 @@
                 debugMode && console.log("animation handlers:", this.AnimationsHandler.length);
 
                 if ( this.AnimationsHandler.length ) {
+
                 //  Find handler index.
                     var index = this.AnimationsHandler.findIndex(function(handler){
                         return handler.mesh == this[ name ];
@@ -491,19 +492,28 @@
             return this;
         },
 
+        removeAll: function() { 
+
+            this.slots.forEach( ( name ) => {
+                if ( this[ name ] ) this.remove( name );
+            });
+
+            return this;
+
+        },
+
         removeFromScene: function(){
 
             if ( arguments.length == 0 ) {
 
-            //  "outfits" has been renamed to "slots"
                 this.slots.forEach( ( name ) => {
                     this.remove( name );
                 });
 
             } else {
 
-                for (var i in arguments){
-                    this.remove( name );
+                for (var arg in arguments){
+                    this.remove( arguments[arg] );
                 }
             }
 
@@ -511,11 +521,6 @@
 
         },
 
-        removeAll: function() { 
-
-            return this.removeFromScene();
-
-        },
 
         removeTexture: function( outfit, map, index ){
 
