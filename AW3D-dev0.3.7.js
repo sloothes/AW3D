@@ -77,18 +77,6 @@
         this.eventTimeout = undefined;
         this.direction = new THREE.Object3D();
 
-        try {
-
-        //  signals.js
-
-            var Signal = signals.Signal;
-            this.changed = new Signal();
-
-        } catch(err){
-
-            console.warn(err);
-        }
-
         this.gender = {
             male    : false,
             female  : false,
@@ -290,6 +278,16 @@
 
     //  Outfit EventDispatcher.
         Object.assign( this, THREE.EventDispatcher.prototype );  // important!
+
+        try {
+
+        //  signals.js
+            var Signal = signals.Signal;
+            this.changed = new Signal();
+
+        } catch(err){
+            console.warn(err);
+        }
 
     };
 
