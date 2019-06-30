@@ -470,7 +470,7 @@
                 if ( this.AnimationsHandler.length ) {
 
                 //  Find handler index.
-                    var index = this.AnimationsHandler.findIndex(function(handler){
+                    var index = this.AnimationsHandler.findIndex((handler) => {
                         return handler.mesh == this[ name ];
                     });
 
