@@ -474,7 +474,7 @@
                         return handler.mesh == this[ name ];
                     });
 
-                    debugMode && console.log({"index", index});
+                    debugMode && console.log({"index": index});
 
                     //  Keep in mind "splice()" uses "zero" 
                     //  and "negative" indexes also. // danger!
