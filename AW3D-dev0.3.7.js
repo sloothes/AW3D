@@ -407,7 +407,10 @@
                         handler.actions[action].timeScale = masterHandler.actions[action].timeScale;
                         handler.actions[action].currentTime = masterHandler.actions[action].currentTime;
                         handler.actions[action].interpolationType = masterHandler.actions[action].interpolationType;
-                        handler.actions[action].isPlaying = masterHandler.actions[action].isPlaying;
+
+                        if ( masterHandler.actions[action].isPlaying ) {
+                            handler.actions[action].play( masterHandler.actions[action].currentTime );
+                        }
 
                     }
 
