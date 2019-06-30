@@ -476,11 +476,17 @@
                         return handler.mesh == this[ name ];
                     });
 
-                //  Get and remove handler from AnimationsHandler.
-                    var handler = this.AnimationsHandler.splice(index, 1)[0];
+                //  If handler index is valid...
+                    if ( index && index > -1 ) {
 
-                //  Stop handler animations.
-                    handler.stop();
+                    //  Get and remove handler from AnimationsHandler.
+                        var handler = this.AnimationsHandler.splice(index, 1)[0];
+
+                    //  Stop handler animations.
+                        handler.stop();
+
+                    }
+
                 }
 
             //  Delete slot.
