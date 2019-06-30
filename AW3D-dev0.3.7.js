@@ -340,7 +340,7 @@
         },
 
         set: function(){
-        //  Sets outfit.slot but not add to outfit.direction.
+        //  Set "this.slot" but not add to "this.direction".
 
             for (var arg in arguments){
 
@@ -385,7 +385,7 @@
                 var asset = Object.values(arguments[arg])[0];
 
                 if ( !name || name == null || !asset ) continue;
-                if (!!this[ name ]) this.remove( name );
+                if ( this[ name ] ) this.remove( name );  // important!
 
                 this[ name ] = asset;
 
@@ -466,7 +466,6 @@
                     this[ name ].skeleton.boneTexture.dispose();
 
             //  Remove the animation handler.
-                debugMode && console.log("animation handlers:", this.AnimationsHandler.length);
 
                 if ( this.AnimationsHandler.length ) {
 
@@ -475,7 +474,11 @@
                         return handler.mesh == this[ name ];
                     });
 
-                //  Keep in mind "splice()" uses negative indexes also. // danger!
+                    debugMode && console.log({"index", index});
+
+                    //  Keep in mind "splice()" uses "zero" 
+                    //  and "negative" indexes also. // danger!
+
                     if ( index != undefined && index > -1 ) {
 
                     //  Get and remove handler from AnimationsHandler.
@@ -490,6 +493,8 @@
 
             //  Delete slot.
                 delete this[ name ];
+
+            //  debugMode && console.log({"animation handlers:", this.AnimationsHandler.length});
 
             }
 
