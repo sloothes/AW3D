@@ -414,14 +414,17 @@
 
                     }
 
+                //  Add animation handler.
+                    this.AnimationsHandler.push( handler );
+
                 } else {
 
+                //  Add animation handler.
+                    this.AnimationsHandler.push( handler );
+                //  Play idle.
                     this.AnimationsHandler.play("idle");
 
                 }
-
-            //  Add animation handler.
-                this.AnimationsHandler.push( handler );
 
             //  Add outfit item to scene.
                 this.direction.add( this[ name ] );
