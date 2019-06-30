@@ -340,24 +340,27 @@
         },
 
         set: function(){
+        //  Sets outfit.slot but not add to outfit.direction.
 
-            for (var i in arguments){
+            for (var arg in arguments){
 
-                if (!arguments[i]) continue;
+                if (!arguments[arg]) continue;
 
-                var name = Object.keys(arguments[i])[0];
-                var asset = Object.values(arguments[i])[0];
-            //  debugMode && console.log({[name]:asset});
+                var name = Object.keys(arguments[arg])[0];
+                var asset = Object.values(arguments[arg])[0];
 
                 if ( !name || name == null || !asset ) continue;
                 if (!!this[ name ]) this.remove( name );
 
                 this[ name ] = asset;
-            //  this[ name ] = asset.clone();
+
+            //  Create an animation handler for this outfit slot.
+                var handler = new AW3D.AnimationHandler( this[name], this.getGender() );
+
+            //  Add animation handler.
+                this.AnimationsHandler.push( handler );
 
             }
-
-            this.AnimationsHandler.refresh();
 
         //  Send "change" event only when last 
         //  add has been completed (delay:100ms).
@@ -380,15 +383,11 @@
 
                 var name = Object.keys(arguments[arg])[0];
                 var asset = Object.values(arguments[arg])[0];
-            //  debugMode && console.log(name + ":", asset);
 
                 if ( !name || name == null || !asset ) continue;
                 if (!!this[ name ]) this.remove( name );
 
                 this[ name ] = asset;
-            //  this[ name ] = asset.clone();
-
-            //  Animations handler.
 
             //  Create an animation handler for this outfit slot.
                 var handler = new AW3D.AnimationHandler( this[name], this.getGender() );
@@ -476,8 +475,8 @@
                         return handler.mesh == this[ name ];
                     });
 
-                //  If handler index is valid...
-                    if ( index && index > -1 ) {
+                //  Keep in mind "splice()" uses negative indexes also. // danger!
+                    if ( index != undefined && index > -1 ) {
 
                     //  Get and remove handler from AnimationsHandler.
                         var handler = this.AnimationsHandler.splice(index, 1)[0];
