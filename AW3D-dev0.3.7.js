@@ -1307,7 +1307,7 @@
 
 
 
-//  materialtoJson.js (v1.5)
+//  materialtoJson.js (v1.5.1)
 
 //  MATERIAL TO JSON.
 //  Return a promise with the 
@@ -1358,6 +1358,7 @@
 
             if ( material[ name ] == undefined ) continue;         // important!
             if ( material[ name ] instanceof Function ) continue;  // important!
+            if ( typeof(material[name]) === "function" ) continue; // important!
 
             switch( name ){
 
@@ -1471,7 +1472,7 @@
 
             if ( texture[ name ] == undefined ) continue;
             if ( texture[ name ] instanceof Function ) continue;
-
+            if ( typeof(texture[name]) === "function" ) continue;
 
             switch (name){
 
@@ -1541,7 +1542,7 @@
 
 
 
-//  materialfromJson.js (v1.5)
+//  materialfromJson.js (v1.5.1)
 
 //  MATERIAL FROM JSON.
 //  Return a promise with the material resolved.
@@ -1655,7 +1656,7 @@
     }
 
 
-//  TEXTURE FROM JSON (v1.5)
+//  TEXTURE FROM JSON (v1.5.1)
 //  Return a promise with the texture resolved.
 
     function texturefromJSON( json ){
@@ -1814,7 +1815,7 @@
 
 
 
-//  IMAGE FROM JSON (v1.5)
+//  IMAGE FROM JSON (v1.5.1)
 //  Return a promise with the image resolved.
 
     function imagefromJSON( json, onLoadEnd ){
