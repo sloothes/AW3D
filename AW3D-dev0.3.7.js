@@ -1667,8 +1667,10 @@
 
             switch (name){
 
-            //  by pass.
+            //  by pass cases.
+
                 case "meta":
+                case "image":
                 break;
 
             //  array to vector2.
@@ -1733,7 +1735,7 @@
                 break;
         */
 
-            //  case "image": no image case.
+            //  case "image": (N/A).
                 case "sourceFile":
 
                 //  SourceFile first.
