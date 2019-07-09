@@ -1656,7 +1656,7 @@
     }
 
 
-//  TEXTURE FROM JSON (v1.5.2)
+//  TEXTURE FROM JSON (v1.5.3)
 //  Return a promise with the texture resolved.
 
     function texturefromJSON( json ){
@@ -1739,64 +1739,83 @@
                     texture.sourceFile = json.sourceFile;
 
                 //  SourceFile first.
-                    var url = json.sourceFile || json.image.src || json.image;
+                    var url = json.sourceFile || json.image.src || json.image || "https://i.imgur.com/ODeftia.jpg";
                 //  debugMode && console.log( url );
 
+                //  URL.
 
-                //  Cache first.
-                    caches.match( url ).then(function(response){
+                    if ( validator && validator.isURL( url ) ) {
 
-                        if ( !response ) 
-                            throw response;
-                        else
-                            return response;
+                    //  Cache first.
+                        caches.match( url ).then(function(response){
 
-                    }).catch(function(err){
+                            if ( !response ) 
+                                throw response;
+                            else
+                                return response;
 
-                    //  We use cors origin mode to avoid
-                    //  texture tainted canvases, images.
+                        }).catch(function(err){
 
-                        return fetch( url, {
-                            mode: "cors",               // important!
-                            method: "GET",
+                        //  We use cors origin mode to avoid
+                        //  texture tainted canvases, images.
+
+                            return fetch( url, {
+                                mode: "cors",  // important!
+                                method: "GET",
+                            });
+
+                        }).then(async function(response){
+
+                            var cache = await caches.open("textures")
+                            .then(function(cache){ return cache; });
+
+                        //  Clone is needed because put() consumes the response body.
+                        //  See: "https://developer.mozilla.org/en-US/docs/Web/API/Cache/put"
+
+                            var clone = response.clone();
+                            await cache.put( url, clone );
+
+                            return response.blob();         //  important!
+
+                        }).then(function(blob){
+
+                            var img = new Image();
+                            img.crossOrigin = "anonymous";  //  important!
+
+                            $(img).one("load", function(){
+                            //  texture.image = img;        //  or...
+                                var canvas = makePowerOfTwo( img, true );
+                                texture.image = canvas;
+                                if (canvas) $(img).remove(); // optional.
+                                texture.needsUpdate = true;
+                            });
+
+                        //  Get dataURL from blob.
+
+                            var reader = new FileReader();
+                            reader.onload = function() {
+                                img.src = reader.result;
+                            };
+
+                            reader.readAsDataURL(blob);
+
                         });
+                        
+                        break;
+                    } 
 
-                    }).then(async function(response){
+                //  DataURL.
 
-                        var cache = await caches.open("textures")
-                        .then(function(cache){ return cache; });
-
-                    //  Clone is needed because put() consumes the response body.
-                    //  See: "https://developer.mozilla.org/en-US/docs/Web/API/Cache/put"
-
-                        var clone = response.clone();
-                        await cache.put( url, clone );
-
-                        return response.blob();         //  important!
-
-                    }).then(function(blob){
-
+                    if ( validator && validator.isDataURI( url ) ) {
                         var img = new Image();
-                        img.crossOrigin = "anonymous";  //  important!
-
+                        img.crossOrigin = "anonymous";
                         $(img).one("load", function(){
-                        //  texture.image = img;        //  or...
                             var canvas = makePowerOfTwo( img, true );
                             texture.image = canvas;
-                            if (canvas) $(img).remove(); // optional.
+                            if (canvas) $(img).remove();
                             texture.needsUpdate = true;
-                        });
-
-                    //  Get dataURL from blob.
-
-                        var reader = new FileReader();
-                        reader.onload = function() {
-                            img.src = reader.result;
-                        };
-
-                        reader.readAsDataURL(blob);
-
-                    });
+                        }).attr({src: url});  break;
+                    } 
 
                 break;
 
