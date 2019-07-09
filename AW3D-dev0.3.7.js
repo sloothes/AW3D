@@ -1667,8 +1667,6 @@
 
             switch (name){
 
-            //  by pass cases.
-
                 case "meta":
                 case "image":
                 break;
@@ -1738,8 +1736,9 @@
             //  case "image": (N/A).
                 case "sourceFile":
 
-                //  SourceFile first.
                     texture.sourceFile = json.souceFile;
+
+                //  SourceFile first.
                     var url = json.sourceFile || json.image.src || json.image;
                 //  debugMode && console.log( url );
 
