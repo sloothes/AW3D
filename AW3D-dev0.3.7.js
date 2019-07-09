@@ -1656,7 +1656,7 @@
     }
 
 
-//  TEXTURE FROM JSON (v1.5.1)
+//  TEXTURE FROM JSON (v1.5.2)
 //  Return a promise with the texture resolved.
 
     function texturefromJSON( json ){
@@ -1665,15 +1665,11 @@
 
         for ( var name in json ){
 
-
             switch (name){
 
-            //  sourceFile.
-
-                case "sourceFile":
-                    texture.sourceFile = json[ name ]; // important!
+            //  by pass.
+                case "meta":
                 break;
-
 
             //  array to vector2.
 
@@ -1699,10 +1695,6 @@
                     texture.wrapT = json[ name ][1];
 
                 break;
-
-
-
-                case "image":
 
             //  image from texture json with"FileReader.readAsDataURL(blob)".
 
@@ -1734,13 +1726,19 @@
 
                     //  Larger size (33%)
 
+        /*
+            //  sourceFile.
+                case "sourceFile":
+                    texture.sourceFile = json[ name ]; // important!
+                break;
+        */
 
-                //  Why case "image" trigger multiple?
-                //  Because we use duplicate textures.
-                //  debugMode && console.log( name );
+            //  case "image": no image case.
+                case "sourceFile":
 
                 //  SourceFile first.
-                    var url = json.sourceFile || json.image.src;
+                    texture.sourceFile = json.souceFile;
+                    var url = json.sourceFile || json.image.src || json.image;
                 //  debugMode && console.log( url );
 
 
