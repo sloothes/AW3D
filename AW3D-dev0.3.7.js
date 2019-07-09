@@ -1736,7 +1736,7 @@
             //  case "image": (N/A).
                 case "sourceFile":
 
-                    texture.sourceFile = json.souceFile;
+                    texture.sourceFile = json.sourceFile;
 
                 //  SourceFile first.
                     var url = json.sourceFile || json.image.src || json.image;
