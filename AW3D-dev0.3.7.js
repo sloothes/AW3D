@@ -1542,7 +1542,7 @@
 
 
 
-//  materialfromJson.js (v1.5.1)
+//  materialfromJson.js (v1.5.3)
 
 //  MATERIAL FROM JSON.
 //  Return a promise with the material resolved.
@@ -1586,6 +1586,7 @@
             switch (name){
 
                 case "_id":
+                case "meta":
                 break;
 
 
@@ -1644,7 +1645,6 @@
 
                 default:
                     options[ name ] = json[ name ];
-                // "default" should not have "break"?  // danger!
                 break;
 
             }
