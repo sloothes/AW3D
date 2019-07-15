@@ -62,6 +62,7 @@
         return pointer;
     };
 
+
 //  OutfitManager.js
 
 /*
@@ -69,8 +70,6 @@
     * http://anywhere3d.com
     * MIT License
 */
-
-(function(){
 
     AW3D.OutfitManager = function(){
 
@@ -1999,4 +1998,3 @@
         return shift(Math.round(shift(number, precision, false)), precision, true);
     }
 
-})();
