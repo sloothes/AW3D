@@ -1753,7 +1753,7 @@
                                 var canvas = makePowerOfTwo( img, true );
                                 texture.image = canvas;
                                 if (canvas) $(img).remove(); // optional.
-                                texture.needsUpdate = true;
+                            //  texture.needsUpdate = true;
                             });
 
                         //  Get dataURL from blob.
