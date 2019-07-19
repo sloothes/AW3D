@@ -1752,8 +1752,8 @@
                             //  texture.image = img;        //  or...
                                 var canvas = makePowerOfTwo( img, true );
                                 texture.image = canvas;
+                                texture.needsUpdate = true;
                                 if (canvas) $(img).remove(); // optional.
-                            //  texture.needsUpdate = true;
                             });
 
                         //  Get dataURL from blob.
