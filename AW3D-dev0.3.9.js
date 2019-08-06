@@ -460,7 +460,7 @@
                 this.direction.remove( this[ name ] );
 
             //  Dispose textures.
-
+            /*
                 if ( this[ name ] ) {
                     
                     if (this[ name ].material && !this[ name ].material.materials) {
@@ -496,7 +496,7 @@
                     }
 
                 }
-
+            */
             //  Dispose geometry.
                 if ( this[ name ] ) this[ name ].geometry.dispose();
 
