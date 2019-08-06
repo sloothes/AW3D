@@ -467,9 +467,9 @@
 
                     //  Single material.
 
-                        Object.keys(this[ name ].material).filter(function(key){
+                        Object.keys(this[ name ].material).filter( (key) => {
                             return this[ name ].material[ key ] instanceof THREE.Texture;
-                        }).forEach(function(key){
+                        }).forEach( (key) => {
                             this[ name ].material[ key ].dispose();
                             this[ name ].material[ key ] = null;
                         });
