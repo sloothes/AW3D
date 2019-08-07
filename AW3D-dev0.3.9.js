@@ -460,7 +460,7 @@
                 this.direction.remove( this[ name ] );
 
             //  Dispose textures.
-            /*
+
                 if ( this[ name ] ) {
                     
                     if (this[ name ].material && !this[ name ].material.materials) {
@@ -471,7 +471,7 @@
                             return this[ name ].material[ key ] instanceof THREE.Texture;
                         }).forEach( (key) => {
                             this[ name ].material[ key ].dispose();
-                            this[ name ].material[ key ] = null;
+                        //  this[ name ].material[ key ] = null;
                         });
 
                         this[ name ].material.dispose();
@@ -486,7 +486,7 @@
                                 return material[ key ] instanceof THREE.Texture;
                             }).forEach(function(key){
                                 material[ key ].dispose();
-                                material[ key ] = null;
+                            //  material[ key ] = null;
                             });
 
                             material.dispose();
@@ -496,7 +496,7 @@
                     }
 
                 }
-            */
+
             //  Dispose geometry.
                 if ( this[ name ] ) this[ name ].geometry.dispose();
 
