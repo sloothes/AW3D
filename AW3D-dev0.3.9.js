@@ -75,6 +75,12 @@
 
         var self = this;
 
+    //  signals.js
+        var Signal = signals.Signal;
+        this.added = new Signal();
+        this.removed = new Signal();
+        this.changed = new Signal();
+
         this.eventTimeout = undefined;
         this.direction = new THREE.Object3D();
 
@@ -282,16 +288,6 @@
     //  Outfit EventDispatcher.
         Object.assign( this, THREE.EventDispatcher.prototype );  // important!
 
-        try {
-
-        //  signals.js
-            var Signal = signals.Signal;
-            this.changed = new Signal();
-
-        } catch(err){
-            console.warn(err);
-        }
-
     };
 
     AW3D.OutfitManager.prototype = {
@@ -433,6 +429,9 @@
 
         //  this.AnimationsHandler.refresh(); 
 
+            this.dispatchEvent( {type:"add"} );
+            this.added && this.added.dispatch();
+
         //  Send "change" event only when last 
         //  add has been completed (delay:100ms).
             var msec = 100;
@@ -471,7 +470,7 @@
                             return this[ name ].material[ key ] instanceof THREE.Texture;
                         }).forEach( (key) => {
                             this[ name ].material[ key ].dispose();
-                        //  this[ name ].material[ key ] = null;
+                        //  DO NOT NULL/DELETE TEXTURE.  important!
                         });
 
                         this[ name ].material.dispose();
@@ -486,7 +485,7 @@
                                 return material[ key ] instanceof THREE.Texture;
                             }).forEach(function(key){
                                 material[ key ].dispose();
-                            //  material[ key ] = null;
+                            //  DO NOT NULL/DELETE TEXTURE. important!
                             });
 
                             material.dispose();
@@ -537,6 +536,9 @@
             }
 
         //  this.AnimationsHandler.refresh(); 
+
+            this.dispatchEvent( {type:"remove"} );
+            this.removed && this.removed.dispatch();
 
         //  Send "change" event only when last 
         //  remove has been completed (delay:100ms).
