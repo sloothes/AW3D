@@ -758,6 +758,7 @@
 
     //  fromJSON (v2.0.5).
 
+    //  TODO: REPLACE async/await FOR BACKWARD COMPETALITY.
         fromJSON: async function( json ){
 
         //  Stringify json...
@@ -868,6 +869,7 @@
 
                         return fetch( object.geometry );
 
+                //  TODO: REPLACE async/await FOR BACKWARD COMPETALITY.
                     }).then(async function(response){
 
                         var cache = await caches.open("geometries")
@@ -1770,6 +1772,7 @@
                                 method: "GET",
                             });
 
+                    //  TODO: REPLACE async/await FOR BACKWARD COMPETALITY.
                         }).then(async function(response){
 
                             var cache = await caches.open("textures")
@@ -1864,6 +1867,7 @@
                 method: "GET",
             });
 
+    //  TODO: REPLACE async/await FOR BACKWARD COMPETALITY.
         }).then(async function(response){
 
             var cache = await caches.open("textures")
