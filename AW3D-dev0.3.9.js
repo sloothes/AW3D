@@ -1253,11 +1253,11 @@
             for (var i in arguments){
                 var name = arguments[i];
 
-                debugMode && console.log({
-                    "_this":this, 
-                    "_name":name,
-                    "_gender":this.gender, 
-                });
+            //  debugMode && console.log({
+            //      "_this":this, 
+            //      "_name":name,
+            //      "_gender":this.gender, 
+            //  });
 
                 var data;
 
