@@ -1251,10 +1251,10 @@
         loadAction: function(){
 
             for (var i in arguments){
-                var name = arguments[i];
-            //  var data = Animations[ name ];
                 var data;
-                switch(this.gender){
+                var name = arguments[i];
+                debugMode && console.log(this, this.gender, name);
+                switch (this.gender) {
                     case "male":
                         data = MaleAnimations[ name ];
                         break;
