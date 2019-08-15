@@ -1251,7 +1251,6 @@
         loadAction: function(){
 
             for (var i in arguments){
-                var data;
                 var name = arguments[i];
 
                 debugMode && console.log({
@@ -1259,6 +1258,8 @@
                     "_name":name,
                     "_this_gender":this.gender, 
                 });
+
+                var data;
 
                 switch (this.gender) {
 
