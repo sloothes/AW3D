@@ -1253,7 +1253,13 @@
             for (var i in arguments){
                 var data;
                 var name = arguments[i];
-                debugMode && console.log(this, this.gender, name);
+
+                debugMode && console.log({
+                    "_this":this, 
+                    "_name":name,
+                    "_this_gender":this.gender, 
+                });
+
                 switch (this.gender) {
                     case "male":
                         data = MaleAnimations[ name ];
