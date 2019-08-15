@@ -1261,17 +1261,18 @@
                 });
 
                 switch (this.gender) {
+
                     case "male":
                         data = MaleAnimations[ name ];
-                        break;
+                    break;
+
                     case "female":
                         data = FemaleAnimations[ name ];
-                        break;
-                    case false:
-                        data = Animations[ name ];
-                        break;
+                    break;
+
                     default:
                         data = Animations[ name ];
+                    break;
                 }
             
                 var action = new THREE.Animation( this.mesh, data );
@@ -1290,31 +1291,39 @@
             this.deleteAll();
             this.actions = {};
 
-            if (!!this.gender && this.gender == "male") {
+            if (!!this.actions.jump) this.actions.jump.loop = false;
+
+            if (MaleAnimations && !!this.gender && this.gender == "male") {
                 Object.keys( MaleAnimations ).forEach(function(name, i){
                     self.loadAction( name );
                 });
+
+                return;
             }
             
-            if (!!this.gender && this.gender == "female") {
+            if (FemaleAnimations && !!this.gender && this.gender == "female") {
                 Object.keys( FemaleAnimations ).forEach(function(name, i){
                     self.loadAction( name );
                 });
+
+                return;
             }
 
-            if ( !this.gender ) {
+            if ( Animations && !this.gender ) {
                 Object.keys( Animations ).forEach(function(name, i){
                     self.loadAction( name );
                 });
+
+                return;
             }
 
             if ( !!this.gender && this.gender != "male" && this.gender != "female" ){
                 console.warn("AW3D.AnimationHandler:",
                     `reloadActions(${this.gender}): Gender exists but is not male or female.`
                 );
-            }
 
-            if (!!this.actions.jump) this.actions.jump.loop = false;
+                return;
+            }
         }
 
     };
