@@ -897,7 +897,7 @@
 
             debugMode && console.log("promises:", promises);
 
-			return Promise.all(promises).then(function(results){
+			Promise.all(promises).then(function(results){
                 debugMode && console.log("results:", results);
 
 			//  cleanup.
