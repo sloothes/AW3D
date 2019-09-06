@@ -804,7 +804,7 @@
                 if (json.coat) orderMap.push("coat");
             })();
 
-        //  debugMode && console.log({"orderMap": orderMap});
+            debugMode && console.log({"orderMap": orderMap});
 
             var outfit = {};
 			var promises = [];
@@ -895,12 +895,14 @@
 				); // end push.
 			}// end for.
 
-        //  debugMode && console.log(promises);
+            debugMode && console.log("promises:", promises);
 
 			return Promise.all(promises).then(function(results){
+                debugMode && console.log("results:", results);
 
 			//  cleanup.
 				var results = results.filter(Boolean); // important!
+                debugMode && console.log("cleaned results:", results);
 
 			//  add outfit.
 				while (results.length) {
