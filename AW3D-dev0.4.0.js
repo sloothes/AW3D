@@ -910,6 +910,7 @@
 				}
 
 			}).then(function(){
+                debugMode && console.log(outfit);
 				return outfit;
 			});
 
