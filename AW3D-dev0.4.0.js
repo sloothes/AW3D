@@ -811,13 +811,12 @@
 
             for (var i = 0; i < orderMap.length; i++){
 
-                var key = orderMap[i];
-
 				promises.push(
 					new Promise(function(resolve, reject){
 
 						var object = {};
 						var sortIndex = i;
+                        var key = orderMap[i];
 
 						object.name      = json[ key ].name;
 						object.visible   = json[ key ].visible;
