@@ -840,6 +840,7 @@
 								return response;
 
 						}).catch(function(err){
+                            console.error(err);
 
 							return caches.open("geometries").then(function(cache){
 								return cache.add( object.geometry ).then(function(){
@@ -887,7 +888,7 @@
 							outfit[ key ] = skinned;
 
 						}).catch(function(err){
-							resolve( null );
+						//	resolve( null );
 							console.error(err);
 						});
 
@@ -897,7 +898,7 @@
 
             debugMode && console.log("promises:", promises);
 
-			Promise.all(promises).then(function(results){
+			return Promise.all(promises).then(function(results){
                 debugMode && console.log("results:", results);
 
 			//  cleanup.
