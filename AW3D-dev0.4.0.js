@@ -1,14 +1,6 @@
-//  AW3D.js (dev0.3.9)
+//  AW3D.js (v0.4.0)
 
-    var debugMode;
-
-/*
-    * @author anywhere3d
-    * http://anywhere3d.org
-    * MIT License
-*/
-
-    AW3D = { VERSION: "0.3.9 dev" };
+	AW3D = { VERSION: "0.4.0 dev" };
 
 //  Player Holder.
     AW3D.PlayerHolder = function ( name ){
@@ -29,7 +21,8 @@
 //  Player Controller Direction pointer.
     AW3D.DirectionPointer = function ( name ){
         var geometry = new THREE.CylinderGeometry( 0, 1, 20, 12 );
-        geometry.rotateX( Math.PI / 2 );  //  BE CAREFULL: is not "mesh.rotation.y = -Math.PI".
+	//  BE CAREFULL: is not "mesh.rotation.y = -Math.PI".
+        geometry.rotateX( Math.PI / 2 );  //  important!
         var material = new THREE.MeshStandardMaterial({color:0x00ff00});
         var pointer = new THREE.Mesh(geometry, material);
         pointer.position.set(0, 15, 0);
@@ -42,7 +35,10 @@
     AW3D.PlayerSphere = function ( name ){
         var sphere = new THREE.Mesh(
             new THREE.SphereGeometry( 15, 8, 4 ),
-            new THREE.MeshBasicMaterial( { color: 0xff0000,  wireframe: true} )
+            new THREE.MeshBasicMaterial({ 
+				color: 0xff0000,  
+				wireframe: true,
+			})
         ); 
         sphere.position.y = 12;
         sphere.name = name || "PLAYER SPHERE";
@@ -53,7 +49,8 @@
 //  Player pointer.
     AW3D.PlayerPointer = function ( name ){
         var geometry = new THREE.CylinderGeometry( 0, 1, 20, 12 );
-        geometry.rotateX( Math.PI / 2 );  //  BE CAREFULL: is not "mesh.rotation.y = -Math.PI". //
+	//  BE CAREFULL: is not "mesh.rotation.y = -Math.PI".
+        geometry.rotateX( Math.PI / 2 );  //  important!
         var material = new THREE.MeshNormalMaterial();
         var pointer = new THREE.Mesh(geometry, material);
         pointer.position.set(0, 40, 0);
@@ -65,17 +62,11 @@
 
 //  OutfitManager.js
 
-/*
-    * @author anywhere3d
-    * http://anywhere3d.com
-    * MIT License
-*/
-
     AW3D.OutfitManager = function(){
 
         var self = this;
 
-    //  signals.js
+	//  requires "signals.min.js"
         var Signal = signals.Signal;
         this.added = new Signal();
         this.removed = new Signal();
@@ -97,8 +88,6 @@
             attached : false,
         };
 
-    //  Layers. (aparts-holders).
-
         this.layers = [
             "body",
             "head",
@@ -114,8 +103,6 @@
             "genitals", 
             "skeleton",
         ];
-
-    //  Slots. (clothes-category-model).
 
         this.slots = [
             "skeleton",
@@ -137,8 +124,6 @@
             "penis", 
             "vagina",
         ];
-
-    //  (Images-Canvas-Textures).
 
         this.stickers = [
             "skin",
@@ -162,8 +147,6 @@
             "scapula",
             "lumbar",
         ];
-
-    //  Models.
 
         this.attachments = [
             "helmet",
@@ -194,13 +177,10 @@
             "penis", 
         ];
 
-
-    //  Outfit.AnimationsHandler is an simple array where player
-    //  player.outfit keeps the AW3D.AnimationHandler instances.
-
         this.AnimationsHandler = [];
 
-    //  AnimationsHandler is a simple array.
+    //  Outfit.AnimationsHandler is an simple array where local
+    //  player.outfit keeps the AW3D.AnimationHandler instances.
 
         this.AnimationsHandler.reset = function(){
             this.length = 0; // reset array.
@@ -282,13 +262,13 @@
             });
     
             this.play("idle");
-    
         };
 
     //  Outfit EventDispatcher.
         Object.assign( this, THREE.EventDispatcher.prototype );  // important!
 
     };
+
 
     AW3D.OutfitManager.prototype = {
 
@@ -347,12 +327,12 @@
                 var asset = Object.values(arguments[arg])[0];
 
                 if ( !name || name == null || !asset ) continue;
-                if (!!this[ name ]) this.remove( name );
+                if ( !!this[ name ] ) this.remove( name );
 
                 this[ name ] = asset;
 
             //  Create an animation handler for this outfit slot.
-                var handler = new AW3D.AnimationHandler( this[name], this.getGender() );
+                var handler = new AW3D.AnimationHandler( this[ name ], this.getGender() );
 
             //  Add animation handler.
                 this.AnimationsHandler.push( handler );
@@ -361,6 +341,7 @@
 
         //  Send "change" event only when last 
         //  add has been completed (delay:100ms).
+
             var msec = 100;
             clearTimeout( this.eventTimeout );
             this.eventTimeout = setTimeout( () => {
@@ -369,7 +350,6 @@
             }, msec);
 
             return this;
-
         },
 
         add: function(){
@@ -434,6 +414,7 @@
 
         //  Send "change" event only when last 
         //  add has been completed (delay:100ms).
+
             var msec = 100;
             clearTimeout( this.eventTimeout );
             this.eventTimeout = setTimeout( () => {
@@ -477,7 +458,7 @@
 
                     } else if (this[ name ].material.materials && this[ name ].material.materials.length) {
 
-                       //  Multimaterial.
+                    //  Multimaterial.
 
                         this[ name ].material.materials.forEach(function(material){
 
@@ -531,8 +512,6 @@
             //  Delete slot.
                 delete this[ name ];
 
-            //  debugMode && console.log({"animation handlers:", this.AnimationsHandler.length});
-
             }
 
         //  this.AnimationsHandler.refresh(); 
@@ -542,6 +521,7 @@
 
         //  Send "change" event only when last 
         //  remove has been completed (delay:100ms).
+
             var msec = 100;
             clearTimeout( this.eventTimeout );
             this.eventTimeout = setTimeout( () => {
@@ -578,13 +558,11 @@
             }
 
             return this;
-
         },
-
 
         removeTexture: function( outfit, map, index ){
 
-            //  outfit: outfit name from slots (e.g "body", "hair", "dress", etc.)
+            //  outfit: outfit slot name (e.g "body", "hair", "dress", etc.)
             //  map   : material map name (e.g. "map", "bumpMap", "normalMap", etc.)
             //  index : material index of multimaterial ("null" for simple material).
 
@@ -628,7 +606,8 @@
                 self.gender[ name ] = ( name == gender );
             });
 
-        //  Direction scale.
+        //  Outfit direction scale. (object3D)
+
             switch ( this.getGender() ){
 
                 case "male":
@@ -696,8 +675,8 @@
             }
 
             return pose;
-
         },
+
 
         toJSON: function(){
 
@@ -755,13 +734,11 @@
 
         },
 
+    //  fromJSON (v2.1).
 
-    //  fromJSON (v2.0.5).
+        fromJSON: function( json ){
 
-    //  TODO: REPLACE async/await FOR BACKWARD COMPETALITY.
-        fromJSON: async function( json ){
-
-        //  Stringify json...
+		//  Make a copy of json. important!
 
             if ( typeof(json) == "object" ) {
 
@@ -769,36 +746,31 @@
 
                     var json = JSON.stringify( json ); // string copy of json.
 
-                } catch(err) {
-
-                    console.error(err);
-                    return;
-                }
+                } catch(err) { throw err; }
 
             }
 
-        //  ...to validate json as string...
+		//  requires "validation.js".
 
             if ( typeof(json) == "string" ) {
 
                 if ( !validator.isJSON( json ) ) {
-
-                    console.error("Validation: json not valid");
-                    return;
+                    throw "Validation Error: json not valid";
                 }
 
-            }
+            } else {
 
-        //  ...and create a fresh copy of json.
+				throw "Type Error: json is not string type.";
 
-            var json = JSON.parse( json ); // (now is a json copy).
+			}
 
-        //  debugMode && console.log( {"json": deepCopy(json) });
-        //  debugMode && console.log( {"json": JSON.parse( JSON.stringify(json))} );
+			
+			var json = JSON.parse( json ); // (now is a json copy).
+
 
             var self = this;
 
-        //  Copy gender first.
+        //  Set gender first.
 
             this.removeAll();          // important!
             var gender = json.gender;  // important!
@@ -807,14 +779,14 @@
         //  Clear gender of json.
             delete json.gender; // (is a copy of json).
 
-        //  DOES ORDER MATTER (for transparency)?
-        //  Yes! Order in localPlayer.outfit.direction.children array DOES MATTER.
+        //  ORDER DOES MATTER for transparency:
+        //   Order in localPlayer.outfit.direction.children array DOES MATTER.
         //  So we must deliver the outfit.direction.children array with the following order:
         //  [skeleton, body, eyes, hairs, stockings, underwears, tshirt, trousers, costume, dress, shoes, coat]
 
             var orderMap = [];
 
-            {
+            (function(){
                 if (json.skeleton) orderMap.push("skeleton");
                 if (json.body) orderMap.push("body");
                 if (json.eyes) orderMap.push("eyes");
@@ -830,110 +802,130 @@
                 if (json.dress) orderMap.push("dress");
                 if (json.shoes) orderMap.push("shoes");
                 if (json.coat) orderMap.push("coat");
-            }
+            })();
 
         //  debugMode && console.log({"orderMap": orderMap});
 
             var outfit = {};
+			var promises = [];
 
             for (var i = 0; i < orderMap.length; i++){
 
                 var key = orderMap[i];
 
-                await new Promise(function(resolve, reject){
+				promises.push(
+					new Promise(function(resolve, reject){
 
-                    var object = {};
-                    var sortIndex = i;
+						var object = {};
+						var sortIndex = i;
 
-                    object.name      = json[ key ].name;
-                    object.visible   = json[ key ].visible;
-                    object.material  = json[ key ].material;
-                    object.geometry  = json[ key ].geometry;  // (url).
+						object.name      = json[ key ].name;
+						object.visible   = json[ key ].visible;
+						object.material  = json[ key ].material;
+						object.geometry  = json[ key ].geometry;  // (url).
 
-                //  Scale.
-                    var vector = new THREE.Vector3();
-                    object.scale = vector.fromArray( json[ key ].scale );
+					//  Scale.
+						var vector = new THREE.Vector3();
+						object.scale = vector.fromArray( json[ key ].scale );
 
-                //  Material.
-                    var material = materialfromJSON( object.material );
+					//  Material.
+						var material = materialfromJSON( object.material );
 
-                //  Geometry: cache first.
-                    caches.match( object.geometry ).then(function(response){
+					//  Geometry: cache first.
+						caches.match( object.geometry ).then(function(response){
 
-                        if ( !response ) 
-                            throw response;
-                        else
-                            return response;
+							if ( !response ) 
+								throw "geometry not found! Trying to fetch geometry...";
+							else
+								return response;
 
-                    }).catch(function(err){
+						}).catch(function(err){
 
-                        return fetch( object.geometry );
+							return caches.open("geometries").then(function(cache){
+								return cache.add( object.geometry ).then(function(){
+									return cache.match( object.geometry ).then(function(response){
+										return response;
+									});
+								});
+							});
+									
+						}).then(function(response){
 
-                //  TODO: REPLACE async/await FOR BACKWARD COMPETALITY.
-                    }).then(async function(response){
+							if (!response) throw "None response returned!";
 
-                        var cache = await caches.open("geometries")
-                        .then(function(cache){ return cache; });
+							return response.json();
 
-                    //  Clone is needed because put() consumes the response body.
-                    //  See: "https://developer.mozilla.org/en-US/docs/Web/API/Cache/put"
+						}).then(function( gmtjson ){
 
-                        var clone = response.clone();
-                        await cache.put( object.geometry, clone );
+							if ( !gmtjson ) throw "None json returned fromJSON!";
 
-                        return response.json();
+							var loader = new THREE.JSONLoader();
+							var geometry = loader.parse( gmtjson ).geometry;
 
-                    }).then(function(gson){
+							geometry.name = gmtjson.name;
+							geometry.computeFaceNormals();
+							geometry.computeVertexNormals();
+							geometry.computeBoundingBox();
+							geometry.computeBoundingSphere();
+							geometry.sourceFile = object.geometry;  // important!
 
-                        if (!gson) throw ".fromJSON: gson is undefined";
+							var skinned = new THREE.SkinnedMesh( geometry, material );
 
-                        var loader = new THREE.JSONLoader();
-                        var geometry = loader.parse( gson ).geometry;
+							skinned.renderDepth = 1;
+							skinned.frustumCulled = false;
+							skinned.position.set( 0, 0, 0 );
+							skinned.rotation.set( 0, 0, 0 );
+							skinned.scale.copy( object.scale );
+							skinned.castShadow = true;
+							skinned.name = object.name;
+							skinned.sortIndex = sortIndex;
 
-                        geometry.name = gson.name;
-                        geometry.computeFaceNormals();
-                        geometry.computeVertexNormals();
-                        geometry.computeBoundingBox();
-                        geometry.computeBoundingSphere();
-                        geometry.sourceFile = object.geometry;  // important!
+							var obj = {};
+							obj[ key ] = skinned;
+							resolve( obj );
 
-                        var skinned = new THREE.SkinnedMesh( geometry, material );
+							outfit[ key ] = skinned;
 
-                        skinned.renderDepth = 1;
-                        skinned.frustumCulled = false;
-                        skinned.position.set( 0, 0, 0 );
-                        skinned.rotation.set( 0, 0, 0 );
-                        skinned.scale.copy( object.scale );
-                        skinned.castShadow = true;
-                        skinned.name = object.name;
-                        skinned.sortIndex = sortIndex;
+						}).catch(function(err){
+							resolve( null );
+							console.error(err);
+						});
 
-                    //  ".add()" refreshes each time.
+					}) // end of promise,
+				); // end push.
+			}// end for.
 
-                        outfit[ key ] = skinned;
-                        resolve( self.add({[key]: skinned}) );
+        //  debugMode && console.log(promises);
 
-                    });
+			return Promise.all(promises).then(function(results){
 
-                });
+			//  cleanup.
+				var results = results.filter(Boolean); // important!
 
-            }
-            
-            return outfit;
-        },
+			//  add outfit.
+				while (results.length) {
+					self.add( results.shift() );
+				}
+
+			}).then(function(){
+				return outfit;
+			});
+
+		},
 
 
-//  Outfit DNA is an object that contains the outfit data that needed to
-//  re-create the player oufit anywhere remotly. It is player outfit assets
-//  in transfered structure ( aka like .toJSON() ).
-//
-//  .toDNA(); .fromDNA(dna); Usage:
-//      dna = localPlayer.outfit.toDNA();
-//      player = new Player();
-//      player.outfit = new AW3D.Outfit(player);
-//      player.outfit.fromDNA( dna );
+	//  Outfit DNA is an object that contains the outfit data that needed to
+	//  create the player oufit anywhere remotly. It is player outfit assets
+	//  in transfered structure ( aka like .toJSON() ).
+	//
+	//  .toDNA(); .fromDNA(dna); Usage:
+	//      dna = localPlayer.outfit.toDNA();
+	//      player = new Player();
+	//      player.outfit = new AW3D.Outfit(player);
+	//      player.outfit.fromDNA( dna );
 
-    //  to DNA (v2).
+	//	.toDNA, .fromDNA (v2).
+	//	requires "rawinflate.js, rawdeflate.js, and validator.js"
 
         toDNA: function(){
 
@@ -948,9 +940,6 @@
             }
 
         },
-
-
-    //  from DNA (v2).
 
         fromDNA: function( dna ){
 
@@ -1010,17 +999,11 @@
 
         },
 
-    };
+
+	};
 
 
 //  AW3D AnimationHandler.js
-
-/*
-    * @author anywhere3d
-    * http://anywhere3d.org
-    * MIT License
-*/
-
 
 //  Reset THREE.AnimationHandler.animations array.
     THREE.AnimationHandler.animations.length = 0;
@@ -1029,34 +1012,35 @@
     AW3D.AnimationHandler = function ( mesh, gender ) {
 
         this.mesh = mesh;
-        this.gender = gender; // IMPORTANT //
+        this.gender = gender; // important!
         this.actions = {};
 
     //  This create the animations of skinned mesh. 
-        this.reloadActions(); // IMPORTANT //
+        this.reloadActions(); // important!
 
     };
+
 
     AW3D.AnimationHandler.prototype = {
 
         constructor: AW3D.AnimationHandler,
 
         findAction: function(action){
-        //  BE CAREFULL: returns new array with resutls.
+        //  returns new array with resutls.
             return THREE.AnimationHandler.animations.filter( function(animation){
                 return (animation == action); // boolean.
             }); 
         },
 
         findByUuid: function( name ){
-        //  BE CAREFULL: returns new array with resutls.
+        //  returns new array with resutls.
             return THREE.AnimationHandler.animations.filter( function(animation){
                 return (animation.uuid == this.actions[ name ].uuid); // boolean.
             });
         },
 
         findByName: function( name ){
-        //  BE CAREFULL: returns new array with resutls.
+        //  returns new array with resutls.
             return THREE.AnimationHandler.animations.filter( function(animation){
                 return (animation.data.name == name); // boolean.
             });
@@ -1243,21 +1227,16 @@
         walk: function walk(){
             this.actions.walk.play(0);
         },
-    
-    //  -----------------------------------------------------  //
-    //  IMPORTANT: This create the animations of skinned mesh.
-    //  -----------------------------------------------------  //
+
+    //  ------------------------------------------------------  //
+    //  This create the animations of skinned mesh. important!  //
+    //  ------------------------------------------------------  //
 
         loadAction: function(){
 
-            for (var i in arguments){
-                var name = arguments[i];
+            for ( var i in arguments ) {
 
-            //  debugMode && console.log({
-            //      "_this":this, 
-            //      "_name":name,
-            //      "_gender":this.gender, 
-            //  });
+                var name = arguments[i];
 
                 var data;
 
@@ -1283,18 +1262,20 @@
                 action.currentTime = 0;
                 this.actions[ name ] = action;
             }
+
         },
 
         reloadActions: function(){
+
             var self = this;
 
             this.stop();
             this.deleteAll();
             this.actions = {};
 
-            if (!!this.actions.jump) this.actions.jump.loop = false;
+            if (this.actions.jump) this.actions.jump.loop = false;
 
-            if (MaleAnimations && !!this.gender && this.gender == "male") {
+            if (MaleAnimations && this.gender && this.gender == "male") {
                 Object.keys( MaleAnimations ).forEach(function(name, i){
                     self.loadAction( name );
                 });
@@ -1302,7 +1283,7 @@
                 return;
             }
             
-            if (FemaleAnimations && !!this.gender && this.gender == "female") {
+            if (FemaleAnimations && this.gender && this.gender == "female") {
                 Object.keys( FemaleAnimations ).forEach(function(name, i){
                     self.loadAction( name );
                 });
@@ -1318,32 +1299,30 @@
                 return;
             }
 
-            if ( !!this.gender && this.gender != "male" && this.gender != "female" ){
-                console.warn("AW3D.AnimationHandler:",
-                    `reloadActions(${this.gender}): Gender exists but is not male or female.`
+            if ( this.gender && this.gender != "male" && this.gender != "female" ){
+                console.warn( "AW3D.AnimationHandler: reloadActions(" 
+					+ this.gender + "): Gender exists but is not male or female."
                 );
 
                 return;
             }
-        }
 
-    };
+        },
 
+	};
 
-
-//  materialtoJson.js (v1.5.3)
 
 //  MATERIAL TO JSON.
+
+//  materialtoJson.js (v1.6)
 //  Return a promise with the 
 //  material json object resolved.
 
     function materialtoJSON( material ){
 
-
     //  MULTIMATERIAL.
 
-        if ( material.type == "MultiMaterial" ) {
-
+        if ( material.type == "MultiMaterial" || material.materials ) {
 
         //  multimaterial to json.
 
@@ -1425,7 +1404,7 @@
                 case "aoMap":
 
                     if ( !(material[ name ] instanceof THREE.Texture) ) {
-                        throw `${name} is not instance of THREE.Texture`;
+                        throw name + " is not instance of THREE.Texture";
                     }
 
                     json[ name ] = texturetoJSON( material[ name ] );
@@ -1440,7 +1419,7 @@
                 case "specular":
 
                     if ( !(material[ name ] instanceof THREE.Color) ) {
-                        throw `${name} is not instance of THREE.Color`;
+                        throw name + " is not instance of THREE.Color";
                     }
 
                     json[ name ] = material[ name ].getHex();
@@ -1453,7 +1432,7 @@
                 case "normalScale":
 
                     if ( !(material[ name ] instanceof THREE.Vector2) ) {
-                        throw `${name} is not instance of THREE.Vector2`;
+                        throw name + " is not instance of THREE.Vector2";
                     }
 
                     json[ name ] = material[ name ].toArray();
@@ -1469,18 +1448,13 @@
 
                 default:
                     json[ name ] = material[ name ];
-                // "default" should not have "break"?  // danger!
                 break;
 
             }
 
         }
 
-
-    //  debugMode && console.log({"material to json": json});
-
         return json;
-
     }
 
 
@@ -1528,7 +1502,6 @@
 
                 default:
                     json[ name ] = texture[ name ];
-                // "default" should not have "break"?  // danger!
                 break;
 
             }
@@ -1536,7 +1509,6 @@
         }
 
         return json;
-
     }
 
 
@@ -1552,6 +1524,7 @@
 
     }
 
+
 //  TEXTURE IMAGE TO JSON.
 //  Return an image object.
 
@@ -1565,10 +1538,8 @@
     }
 
 
-
-//  materialfromJson.js (v1.5.3)
-
 //  MATERIAL FROM JSON.
+//  materialfromJson.js (v1.6)
 //  Return a promise with the material resolved.
 
     function materialfromJSON( json ){
@@ -1676,11 +1647,10 @@
         }
 
         return new THREE[ options.type ](options);
-
     }
 
 
-//  TEXTURE FROM JSON (v1.5.3)
+//  TEXTURE FROM JSON (v1.6)
 //  Return a promise with the texture resolved.
 
     function texturefromJSON( json ){
@@ -1748,14 +1718,13 @@
 
                 //  Cons:
 
-                    //  Larger size (33%)
+                    //  Larger size (~33%)
+					//  Take more time than URL.createObjectURL(blob);
 
-        /*
             //  sourceFile.
-                case "sourceFile":
-                    texture.sourceFile = json[ name ]; // important!
-                break;
-        */
+            //  case "sourceFile":
+            //      texture.sourceFile = json[ name ]; // important!
+            //  break;
 
             //  case "image": (N/A).
                 case "sourceFile":
@@ -1763,8 +1732,7 @@
                     texture.sourceFile = json.sourceFile;
 
                 //  SourceFile first.
-                    var url = json.sourceFile || json.image.src || json.image || "https://i.imgur.com/ODeftia.jpg";
-                //  debugMode && console.log( url );
+                    var url = json.sourceFile || json.image.src || json.image || "//i.imgur.com/ODeftia.jpg";
 
                 //  URL.
 
@@ -1774,7 +1742,7 @@
                         caches.match( url ).then(function(response){
 
                             if ( !response ) 
-                                throw response;
+                                throw "Texture not found!";
                             else
                                 return response;
 
@@ -1788,32 +1756,31 @@
                                 method: "GET",
                             });
 
-                    //  TODO: REPLACE async/await FOR BACKWARD COMPETALITY.
-                        }).then(async function(response){
+                        }).then(function(response){
 
-                            var cache = await caches.open("textures")
-                            .then(function(cache){ return cache; });
+                            return caches.open("textures").then(function(cache){
 
-                        //  Clone is needed because put() consumes the response body.
-                        //  See: "https://developer.mozilla.org/en-US/docs/Web/API/Cache/put"
+							//  Clone is needed because put() consumes the response body.
+							//  See: "https://developer.mozilla.org/en-US/docs/Web/API/Cache/put"
 
-                            var clone = response.clone();
-                            await cache.put( url, clone );
+								var clone = response.clone();
+								return cache.put( url, clone ).then(function(){
+									return response.blob();  //  important!
+								});
 
-                            return response.blob();         //  important!
+							});
 
                         }).then(function(blob){
 
                             var img = new Image();
                             img.crossOrigin = "anonymous";  //  important!
 
-                            $(img).one("load", function(){
-                            //  texture.image = img;        //  or...
+                            img.onload = function(){
                                 var canvas = makePowerOfTwo( img, true );
                                 texture.image = canvas;
                                 texture.needsUpdate = true;
-                                if (canvas) $(img).remove(); // optional.
-                            });
+								img.onload = null; // optional!
+                            };
 
                         //  Get dataURL from blob.
 
@@ -1834,12 +1801,13 @@
                     if ( validator && validator.isDataURI( url ) ) {
                         var img = new Image();
                         img.crossOrigin = "anonymous";
-                        $(img).one("load", function(){
+                        img.onload = function(){
                             var canvas = makePowerOfTwo( img, true );
                             texture.image = canvas;
-                            if (canvas) $(img).remove();
                             texture.needsUpdate = true;
-                        }).attr({src: url});  break;
+							img.onload = null; // optional!
+                        }; 
+						img.src = url;  break;
                     } 
 
                 break;
@@ -1853,12 +1821,10 @@
         }
 
         return texture;
-
     }
 
 
-
-//  IMAGE FROM JSON (v1.5.1)
+//  IMAGE FROM JSON (v1.6)
 //  Return a promise with the image resolved.
 
     function imagefromJSON( json, onLoadEnd ){
@@ -1879,29 +1845,30 @@
             //  texture tainted canvases, images.
 
             return fetch( url, {
-                mode: "cors",               // important!
+                mode: "cors",  // important!
                 method: "GET",
             });
 
     //  TODO: REPLACE async/await FOR BACKWARD COMPETALITY.
-        }).then(async function(response){
+        }).then(function(response){
 
-            var cache = await caches.open("textures")
-            .then(function(cache){ return cache; });
+            return caches.open("textures").then(function(cache){
 
-        //  Clone is needed because put() consumes the response body.
-        //  See: "https://developer.mozilla.org/en-US/docs/Web/API/Cache/put"
+			//  Clone is needed because put() consumes the response body.
+			//  See: "https://developer.mozilla.org/en-US/docs/Web/API/Cache/put"
 
-            var clone = response.clone();
-            await cache.put( url, clone );
+				var clone = response.clone();
+				return cache.put( url, clone ).then(function(){
+					return response.blob(); //  important!
+				});
 
-            return response.blob();         //  important!
+			});
 
         }).then(function(blob){
 
             var img = new Image();
             img.crossOrigin = "anonymous";  //  important!
-            if ( onLoadEnd ) $(img).one("load", onLoadEnd);
+            img.onload = onLoadEnd;
 
         //  Get dataURL from blob.
 
