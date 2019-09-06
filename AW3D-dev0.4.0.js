@@ -887,7 +887,7 @@
 							outfit[ key ] = skinned;
 
 						}).catch(function(err){
-						//	resolve( null );
+                            resolve( null );
 							console.error(err);
 						});
 
@@ -910,7 +910,7 @@
 				}
 
 			}).then(function(){
-                debugMode && console.log(outfit);
+                debugMode && console.log("outfit:", outfit);
 				return outfit;
 			});
 
